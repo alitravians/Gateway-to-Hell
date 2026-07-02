@@ -1,0 +1,195 @@
+{
+  "name": "GatewayToHell",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "GameConfig": {
+        "$path": "src/GameConfig.module.lua"
+      },
+      "StoryPuzzles": {
+        "$path": "src/StoryPuzzles.module.lua"
+      }
+    },
+    "ServerScriptService": {
+      "LobbyBuilder": {
+        "$path": "src/LobbyBuilder.server.lua"
+      },
+      "LeaderboardService": {
+        "$path": "src/LeaderboardService.server.lua"
+      },
+      "AchievementsService": {
+        "$path": "src/AchievementsService.server.lua"
+      },
+      "MatchmakingService": {
+        "$path": "src/MatchmakingService.server.lua"
+      },
+      "RoundService": {
+        "$path": "src/RoundService.server.lua"
+      },
+      "MonsterService": {
+        "$path": "src/MonsterService.server.lua"
+      },
+      "StoryMapBuilder": {
+        "$path": "src/StoryMapBuilder.server.lua"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "LobbyAmbience": {
+          "$path": "src/LobbyAmbience.client.lua"
+        },
+        "MatchmakingClient": {
+          "$path": "src/MatchmakingClient.client.lua"
+        },
+        "PlayerEffects": {
+          "$path": "src/PlayerEffects.client.lua"
+        },
+        "AchievementsToast": {
+          "$path": "src/AchievementsToast.client.lua"
+        },
+        "VoiceChatScaffold": {
+          "$path": "src/VoiceChatScaffold.client.lua"
+        }
+      }
+    },
+    "Workspace": {
+      "$properties": {
+        "Gravity": 196.2,
+        "NeedsPivotMigration": false,
+        "StreamingEnabled": true,
+        "StreamingMinRadius": 512,
+        "StreamingTargetRadius": 1024
+      },
+      "Baseplate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            0,
+            0,
+            0
+          ],
+          "Color": [
+            0.20392,
+            0.20392,
+            0.20392
+          ],
+          "CanCollide": true,
+          "CanQuery": true,
+          "CanTouch": true,
+          "CastShadow": true,
+          "Size": [
+            256,
+            1,
+            256
+          ],
+          "Transparency": 0
+        }
+      },
+      "SpawnLocation": {
+        "$className": "SpawnLocation",
+        "$properties": {
+          "Anchored": true,
+          "Position": [
+            -34,
+            2.5,
+            0
+          ],
+          "Color": [
+            0.67843,
+            0.67843,
+            0.67843
+          ],
+          "Size": [
+            14,
+            1,
+            14
+          ],
+          "Transparency": 0,
+          "Enabled": true,
+          "Neutral": true,
+          "AllowTeamChangeOnTouch": false,
+          "CanCollide": true,
+          "Duration": 0
+        }
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "Ambient": [
+          0.09,
+          0.05,
+          0.14
+        ],
+        "Brightness": 0.8,
+        "ClockTime": 0.2,
+        "EnvironmentDiffuseScale": 0.35,
+        "EnvironmentSpecularScale": 0.1,
+        "ExposureCompensation": -0.15,
+        "FogColor": [
+          0.08,
+          0.07,
+          0.14
+        ],
+        "FogEnd": 220,
+        "GeographicLatitude": 20,
+        "GlobalShadows": true,
+        "OutdoorAmbient": [
+          0.11,
+          0.06,
+          0.16
+        ],
+        "Technology": "Voxel"
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Color": [
+            0.06,
+            0.05,
+            0.11
+          ],
+          "Decay": [
+            0.3,
+            0.16,
+            0.32
+          ],
+          "Density": 0.42,
+          "Glare": 0,
+          "Haze": 1.2,
+          "Offset": 0.1
+        }
+      },
+      "ColorCorrection": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Enabled": true,
+          "Brightness": -0.05,
+          "Contrast": 0.2,
+          "Saturation": -0.18,
+          "TintColor": [
+            0.8,
+            0.68,
+            1
+          ]
+        }
+      }
+    },
+    "SoundService": {
+      "$properties": {
+        "RespectFilteringEnabled": true
+      }
+    },
+    "StarterGui": {
+      "LoadingScreen": {
+        "$path": "src/LoadingScreen.client.lua"
+      },
+      "MainMenu": {
+        "$path": "src/MainMenu.client.lua"
+      },
+      "RoundHUD": {
+        "$path": "src/RoundHUD.client.lua"
+      }
+    }
+  }
+}

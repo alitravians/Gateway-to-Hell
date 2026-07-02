@@ -22,21 +22,33 @@ screenGui.Parent = playerGui
 
 local chaseMusic = Instance.new("Sound")
 chaseMusic.Name = "ChaseMusic"
-chaseMusic.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic > 0 then
+	chaseMusic.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic}`
+else
+	chaseMusic.SoundId = ""
+end
 chaseMusic.Looped = true
 chaseMusic.Volume = 0
 chaseMusic.Parent = SoundService
 
 local heartbeat = Instance.new("Sound")
 heartbeat.Name = "HeartbeatLoop"
-heartbeat.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat > 0 then
+	heartbeat.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat}`
+else
+	heartbeat.SoundId = ""
+end
 heartbeat.Looped = true
 heartbeat.Volume = 0
 heartbeat.Parent = SoundService
 
 local downedLoop = Instance.new("Sound")
 downedLoop.Name = "DownedLoop"
-downedLoop.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop > 0 then
+	downedLoop.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop}`
+else
+	downedLoop.SoundId = ""
+end
 downedLoop.Looped = true
 downedLoop.Volume = 0
 

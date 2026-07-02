@@ -131,8 +131,11 @@ local activePanel = nil
 
 local function setContent(lines, header)
     contentTitle.Text = header
-    contentBody:ClearAllChildren()
-    bodyLayout.Parent = contentBody
+    for _, child in ipairs(contentBody:GetChildren()) do
+        if not child:IsA("UIListLayout") then
+            child:Destroy()
+        end
+    end
 
     for _, line in ipairs(lines) do
         local label = Instance.new("TextLabel")

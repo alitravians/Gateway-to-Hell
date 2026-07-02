@@ -78,7 +78,7 @@ python3 publish.py --lint-only
 ### بناء الملف
 
 ```bash
-python3 build_all.py
+~/.local/bin/rojo build . -o GatewayToHell.rbxlx
 ```
 
 ### نشر كامل
@@ -95,13 +95,12 @@ python3 publish.py --skip-lint
 
 ## كيف يعمل البناء؟
 
-`build_all.py` يقوم بما يلي:
+Rojo يقوم بما يلي عبر `default.project.json`:
 
-1. يقرأ ملفات `src/`
+1. يقرأ ملفات `src/` مباشرة
 2. يضع كل Script تحت الخدمة المناسبة
-3. يدمج `templates/workspace.xml`
-4. يدمج `templates/lighting.xml`
-5. يولّد `GatewayToHell.rbxlx`
+3. يعرّف Workspace و Lighting داخل المشروع
+4. يولّد `GatewayToHell.rbxlx`
 
 هذا الأسلوب greenfield:
 
@@ -131,7 +130,4 @@ python3 publish.py --skip-lint
 
 ### المشكلة: build يفشل
 
-تأكد أن كل ملفات `src/` موجودة وأن `templates/` تحتوي:
-
-- `workspace.xml`
-- `lighting.xml`
+تأكد أن `default.project.json` موجود ويشير إلى ملفات `src/` الصحيحة.

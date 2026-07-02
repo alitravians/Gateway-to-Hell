@@ -4,7 +4,7 @@ Automated publish pipeline for بوابة الجحيم (Gateway to Hell).
 
 Steps:
   1. Lint all Luau source files (selene + luau-analyze)
-  2. Build: generate GatewayToHell.rbxlx from src/ via build_all.py
+  2. Build: generate GatewayToHell.rbxlx via rojo from default.project.json
   3. Validate XML structure
   4. Strip XML declaration if present
   5. Upload to Roblox Open Cloud API
@@ -105,11 +105,15 @@ def lint():
 
 def build():
     print("\n=== STEP 2: Building (generating GatewayToHell.rbxlx) ===")
-    code, out, err = run([sys.executable, "build_all.py"])
+    rojo = os.path.expanduser("~/.local/bin/rojo")
+    code, out, err = run([rojo, "build", ".", "-o", RBXLX_FILE])
     if code != 0:
         print(f"BUILD FAILED:\n{out}\n{err}")
         sys.exit(1)
-    print(out.strip())
+    if out.strip():
+        print(out.strip())
+    if err.strip():
+        print(err.strip())
     print("Build complete.")
 
 

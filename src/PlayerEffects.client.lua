@@ -96,7 +96,11 @@ blur.Parent = Lighting
 
 local whispers = Instance.new("Sound")
 whispers.Name = "SanityWhispers"
-whispers.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Whispers}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.Whispers > 0 then
+	whispers.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Whispers}`
+else
+	whispers.SoundId = ""
+end
 whispers.Looped = true
 whispers.Volume = 0
 whispers.Parent = screenGui

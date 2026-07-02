@@ -27,10 +27,9 @@
 
 ```text
 Gateway-to-Hell/
-├── build_all.py              # يولّد GatewayToHell.rbxlx من src/
 ├── publish.py                # lint → build → validate → strip → upload
 ├── selene.toml               # إعداد linter لروبلوكس
-├── templates/                 # XML templates للـ Workspace والـ Lighting
+├── default.project.json      # Rojo project file للبنية كاملة
 ├── src/                      # Luau sources
 ├── docs/                     # وثائق التطوير
 ├── blender3d/                # ملاحظات/أدوات بلندر مستقبلية
@@ -38,15 +37,15 @@ Gateway-to-Hell/
 └── icons/                    # الأيقونات
 ```
 
-## كيف يعمل build_all.py؟
+## كيف يعمل البناء؟
 
 هذا المشروع لا يعتمد على تعديل ملف place موجود "في مكانه".
 
 بدل ذلك:
 
-1. يقرأ كل سكربت من `src/`
-2. يضعه تحت الخدمة المناسبة داخل XML
-3. يدمج `templates/workspace.xml` و `templates/lighting.xml`
+1. يقرأ Rojo البنية من `default.project.json`
+2. يربط كل خدمة/سكربت مباشرة بملفها داخل `src/`
+3. يضمّن Workspace و Lighting كتعريفات داخل المشروع
 4. يولّد الملف الكامل:
 
 `GatewayToHell.rbxlx`
@@ -64,7 +63,7 @@ python3 publish.py --lint-only
 ### بناء ملف المكان
 
 ```bash
-python3 build_all.py
+~/.local/bin/rojo build . -o GatewayToHell.rbxlx
 ```
 
 ### نشر إلى Roblox

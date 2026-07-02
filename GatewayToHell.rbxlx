@@ -1,12 +1,1087 @@
 <roblox version="4">
-<Item class="ServerScriptService" referent="RBX00000001">
-  <Properties>
-    <string name="Name">ServerScriptService</string>
-  </Properties>
-<Item class="Script" referent="RBX00000100">
-  <Properties>
-    <string name="Name">LobbyBuilder</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+  <Item class="Lighting" referent="0">
+    <Properties>
+      <string name="Name">Lighting</string>
+      <Color3 name="Ambient">
+        <R>0.09</R>
+        <G>0.05</G>
+        <B>0.14</B>
+      </Color3>
+      <float name="Brightness">0.8</float>
+      <float name="ClockTime">0.2</float>
+      <float name="EnvironmentDiffuseScale">0.35</float>
+      <float name="EnvironmentSpecularScale">0.1</float>
+      <float name="ExposureCompensation">-0.15</float>
+      <Color3 name="FogColor">
+        <R>0.08</R>
+        <G>0.07</G>
+        <B>0.14</B>
+      </Color3>
+      <float name="FogEnd">220</float>
+      <float name="GeographicLatitude">20</float>
+      <bool name="GlobalShadows">true</bool>
+      <Color3 name="OutdoorAmbient">
+        <R>0.11</R>
+        <G>0.06</G>
+        <B>0.16</B>
+      </Color3>
+      <token name="Technology">1</token>
+    </Properties>
+    <Item class="Atmosphere" referent="1">
+      <Properties>
+        <string name="Name">Atmosphere</string>
+        <Color3 name="Color">
+          <R>0.06</R>
+          <G>0.05</G>
+          <B>0.11</B>
+        </Color3>
+        <Color3 name="Decay">
+          <R>0.3</R>
+          <G>0.16</G>
+          <B>0.32</B>
+        </Color3>
+        <float name="Density">0.42</float>
+        <float name="Glare">0</float>
+        <float name="Haze">1.2</float>
+        <float name="Offset">0.1</float>
+      </Properties>
+    </Item>
+    <Item class="ColorCorrectionEffect" referent="2">
+      <Properties>
+        <string name="Name">ColorCorrection</string>
+        <float name="Brightness">-0.05</float>
+        <float name="Contrast">0.2</float>
+        <bool name="Enabled">true</bool>
+        <float name="Saturation">-0.18</float>
+        <Color3 name="TintColor">
+          <R>0.8</R>
+          <G>0.68</G>
+          <B>1</B>
+        </Color3>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="ReplicatedStorage" referent="3">
+    <Properties>
+      <string name="Name">ReplicatedStorage</string>
+    </Properties>
+    <Item class="ModuleScript" referent="4">
+      <Properties>
+        <string name="Name">GameConfig</string>
+        <string name="Source"><![CDATA[local GameConfig = {}
+
+GameConfig.GameTitleAr = "بوابة الجحيم"
+GameConfig.GameTitleEn = "Gateway to Hell"
+GameConfig.TaglineAr = "تعاون، اكشف الأسرار، واهرب قبل أن تُغلق البوابة."
+GameConfig.COUNTDOWN_SECONDS = 5
+GameConfig.PLAYER_COUNT_OPTIONS = { 2, 4, 6 }
+GameConfig.DEFAULT_MODE_ID = "Story"
+GameConfig.STORY_REGION_ORIGIN = Vector3.new(2000, 0, 0)
+GameConfig.STORY_KEY_COUNT = 5
+GameConfig.SECRET_OBJECTIVE_ID = "PortalSecret"
+GameConfig.MODE_TIME_LIMITS = {
+    Story = 900,
+    Nightmare = 780,
+    Hardcore = 660,
+    Endless = 1200,
+}
+
+GameConfig.MODE_TUNING = {
+    Story = {
+        Monster = {
+            SpeedMultiplier = 1,
+            VisionRange = 80,
+            HearingRange = 60,
+            CatchRange = 5,
+            SearchRelocateMin = 120,
+            SearchRelocateMax = 180,
+        },
+        Hiding = {
+            DwellMin = 45,
+            DwellMax = 90,
+        },
+        Flashlight = {
+            BatteryDrainPerSecond = 1.8,
+            BatteryPickupAmount = 35,
+        },
+        Sanity = {
+            DarkDrainPerSecond = 1.0,
+            MonsterDrainPerSecond = 2.5,
+            RecoveryPerSecond = 1.4,
+            HiddenDrainPerSecond = 0.2,
+            LowThreshold = 30,
+        },
+        Gameplay = {
+            AllowRevive = true,
+            EndlessPressure = false,
+        },
+    },
+    Nightmare = {
+        Monster = {
+            SpeedMultiplier = 1.25,
+            VisionRange = 95,
+            HearingRange = 75,
+            CatchRange = 5.5,
+            SearchRelocateMin = 90,
+            SearchRelocateMax = 135,
+        },
+        Hiding = {
+            DwellMin = 35,
+            DwellMax = 70,
+        },
+        Flashlight = {
+            BatteryDrainPerSecond = 2.2,
+            BatteryPickupAmount = 30,
+        },
+        Sanity = {
+            DarkDrainPerSecond = 1.4,
+            MonsterDrainPerSecond = 3.3,
+            RecoveryPerSecond = 1.0,
+            HiddenDrainPerSecond = 0.3,
+            LowThreshold = 35,
+        },
+        Gameplay = {
+            AllowRevive = true,
+            EndlessPressure = false,
+        },
+    },
+    Hardcore = {
+        Monster = {
+            SpeedMultiplier = 1.15,
+            VisionRange = 90,
+            HearingRange = 72,
+            CatchRange = 5.75,
+            SearchRelocateMin = 75,
+            SearchRelocateMax = 120,
+        },
+        Hiding = {
+            DwellMin = 30,
+            DwellMax = 60,
+        },
+        Flashlight = {
+            BatteryDrainPerSecond = 2.5,
+            BatteryPickupAmount = 25,
+        },
+        Sanity = {
+            DarkDrainPerSecond = 1.5,
+            MonsterDrainPerSecond = 3.8,
+            RecoveryPerSecond = 0.8,
+            HiddenDrainPerSecond = 0.35,
+            LowThreshold = 35,
+        },
+        Gameplay = {
+            AllowRevive = false,
+            EndlessPressure = false,
+        },
+    },
+    Endless = {
+        Monster = {
+            SpeedMultiplier = 1.08,
+            VisionRange = 88,
+            HearingRange = 70,
+            CatchRange = 5.5,
+            SearchRelocateMin = 60,
+            SearchRelocateMax = 95,
+        },
+        Hiding = {
+            DwellMin = 25,
+            DwellMax = 50,
+        },
+        Flashlight = {
+            BatteryDrainPerSecond = 2.0,
+            BatteryPickupAmount = 40,
+        },
+        Sanity = {
+            DarkDrainPerSecond = 1.2,
+            MonsterDrainPerSecond = 2.9,
+            RecoveryPerSecond = 1.2,
+            HiddenDrainPerSecond = 0.25,
+            LowThreshold = 30,
+        },
+        Gameplay = {
+            AllowRevive = true,
+            EndlessPressure = true,
+            EndlessPulseSeconds = 90,
+        },
+    },
+}
+
+GameConfig.GAME_MODES = {
+    {
+        Id = "Story",
+        NameAr = "القصة",
+        NameEn = "Story",
+        DescriptionAr = "تقدم تعاوني متدرج مع ألغاز وأحداث رعب مركزة.",
+    },
+    {
+        Id = "Nightmare",
+        NameAr = "الكابوس",
+        NameEn = "Nightmare",
+        DescriptionAr = "أعداء أكثر شراسة، ضباب أثقل، ومخاطر أعلى على الفريق.",
+    },
+    {
+        Id = "Hardcore",
+        NameAr = "القاسي",
+        NameEn = "Hardcore",
+        DescriptionAr = "لا رحمة تقريبًا: موارد محدودة وأخطاء أقل مسموحة.",
+    },
+    {
+        Id = "Endless",
+        NameAr = "اللانهاية",
+        NameEn = "Endless",
+        DescriptionAr = "أطول صمود ممكن مع تصاعد تدريجي في التهديدات.",
+    },
+}
+
+GameConfig.COLORS = {
+    Background = Color3.fromRGB(12, 8, 18),
+    Panel = Color3.fromRGB(24, 14, 22),
+    PanelSoft = Color3.fromRGB(34, 18, 28),
+    Accent = Color3.fromRGB(210, 74, 38),
+    AccentAlt = Color3.fromRGB(255, 140, 77),
+    AccentDim = Color3.fromRGB(115, 34, 28),
+    Text = Color3.fromRGB(244, 236, 242),
+    TextMuted = Color3.fromRGB(187, 173, 183),
+    Danger = Color3.fromRGB(182, 48, 36),
+}
+
+GameConfig.SURVIVAL_TIPS = {
+    "ابقَ قريبًا من الفريق؛ الظلام يفرّق من يبقى وحيدًا.",
+    "استمع للأصوات المنخفضة قبل أن تدخل أي ممر جديد.",
+    "لا تجري في خطوط مستقيمة عند سماع فلاشات الرعب.",
+    "تبادل الإضاءة والمراقبة بين اللاعبين لتقليل المفاجآت.",
+    "إذا تغيّر الضوء فجأة، توقّف واستمع لثانيتين.",
+}
+
+GameConfig.MONSTER_LORE = {
+    "الكيان الأصلي لا يظهر كاملًا؛ الباقي يتركه الخوف للخيال.",
+    "أبواب الحديد القديمة لا تفتح باليد، بل بالهمس والندم.",
+    "كل خطوة في القبو القديمة ترد عليك بصدى ليس لك.",
+    "النجاة ليست أن تهرب أسرع؛ النجاة أن تعرف متى لا تنظر.",
+}
+
+GameConfig.CHANGELOG = {
+    "v0.1 — تجهيز اللوبّي، شاشة التحميل، والقائمة الرئيسية.",
+    "v0.1 — نظام المطابقة 2/4/6 مع عدّاد دخول أولي.",
+    "v0.1 — لوحة أفضل اللاعبين وتهيئة بيانات الحفظ.",
+}
+
+GameConfig.PLACEHOLDER_ASSET_IDS = {
+    LobbyMesh = 0,
+    MenuBackdrop = 0,
+    MonsterSilhouette = 0,
+    LobbyMusic = 0,
+    WindLoop = 0,
+}
+
+GameConfig.PLACEHOLDER_SOUND_IDS = {
+    ChaseMusic = 0,
+    Heartbeat = 0,
+    DownedLoop = 0,
+    MonsterStinger = 0,
+    Whispers = 0,
+}
+
+GameConfig.PLACEHOLDER_BADGE_IDS = {
+    FirstEscape = 0,
+    NoDeathsEscape = 0,
+    NightmareClear = 0,
+    HardcoreClear = 0,
+    SecretEnding = 0,
+}
+
+GameConfig.ENDING_LINES = {
+    Good = {
+        TitleAr = "نهاية النجاة",
+        LineAr = "أبواب الجحيم تنحني أمام الناجين، لكن صدى الخطوات ما زال خلفهم.",
+    },
+    Bad = {
+        TitleAr = "النهاية المظلمة",
+        LineAr = "لم يبقَ سوى الصمت… والجدران تردد أسماء من غابوا.",
+    },
+    Secret = {
+        TitleAr = "النهاية السرية",
+        LineAr = "تكشف البوابة سرها لمن يجرؤ على لمس الطقس المظلم ثم يهرب حيًا.",
+    },
+}
+
+GameConfig.UPDATE_SECTIONS = {
+    {
+        TitleAr = "المحتوى الجديد",
+        Items = {
+            "ألغاز القبو الخمسة أصبحت كاملة وتفتح البوابة بعد حلها.",
+            "حارس الجحيم يطاردك بعد انتهاء الوقت مع حالات منطرح/إنعاش.",
+            "نظام الاختباء والمصباح والبطاريات يضيف طبقة بقاء متواصلة.",
+        },
+    },
+    {
+        TitleAr = "المواقع",
+        Items = {
+            "القصر الرئيسي في اللوبي مع البوابة الحجرية والمركز الملعون.",
+            "منطقة القبو البعيدة مع ممرات الغموض والغرفة السرية.",
+        },
+    },
+    {
+        TitleAr = "الصوت والإضاءة",
+        Items = {
+            "طبقات مطاردة جديدة، أنين منخفض، وتأثيرات صفاء/تشوش حسب الحالة.",
+            "توازن ضوء المصباح مع بطاريات قابلة للتجديد وتأثيرات سمعية خفيفة.",
+        },
+    },
+}
+
+GameConfig.LOADING_MESSAGES = {
+    Title = "جارٍ فتح البوابة...",
+    Subtitle = "تهيئة عناصر الرعب التعاوني وتحميل القاعة الرئيسية.",
+}
+
+function GameConfig.getModeById(modeId: string)
+    for _, mode in ipairs(GameConfig.GAME_MODES) do
+        if mode.Id == modeId then
+            return mode
+        end
+    end
+
+    return nil
+end
+
+return GameConfig
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="ModuleScript" referent="5">
+      <Properties>
+        <string name="Name">StoryPuzzles</string>
+        <string name="Source"><![CDATA[local StoryPuzzles = {}
+
+StoryPuzzles.OrderedIds = { "Keys", "Symbols", "Statues", "Candles", "Sounds" }
+
+StoryPuzzles.Definitions = {
+    Keys = {
+        Id = "Keys",
+        Label = "المفاتيح",
+        Total = 5,
+    },
+    Symbols = {
+        Id = "Symbols",
+        Label = "لغز الرموز",
+        Total = 4,
+        Sequence = { "1", "3", "2", "4" },
+    },
+    Statues = {
+        Id = "Statues",
+        Label = "لغز التماثيل",
+        Total = 3,
+        Targets = { 90, 180, 270 },
+    },
+    Candles = {
+        Id = "Candles",
+        Label = "لغز الشموع",
+        Total = 4,
+        Sequence = { 3, 1, 4, 2 },
+    },
+    Sounds = {
+        Id = "Sounds",
+        Label = "لغز الأصوات",
+        Total = 3,
+        Sequence = { 1, 3, 2 },
+    },
+}
+
+function StoryPuzzles.getOrderedDefinitions()
+    local list = {}
+    for _, id in ipairs(StoryPuzzles.OrderedIds) do
+        table.insert(list, StoryPuzzles.Definitions[id])
+    end
+    return list
+end
+
+function StoryPuzzles.getDefinition(puzzleId: string)
+    return StoryPuzzles.Definitions[puzzleId]
+end
+
+return StoryPuzzles
+]]></string>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="ServerScriptService" referent="6">
+    <Properties>
+      <string name="Name">ServerScriptService</string>
+    </Properties>
+    <Item class="Script" referent="7">
+      <Properties>
+        <string name="Name">AchievementsService</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local BadgeService = game:GetService("BadgeService")
+local DataStoreService = game:GetService("DataStoreService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
+
+local ACHIEVEMENTS_STORE = DataStoreService:GetDataStore("GatewayToHell_Achievements_v1")
+local remotesFolder = ReplicatedStorage:WaitForChild("GatewayToHellRemotes")
+local achievementUnlockedEvent = remotesFolder:WaitForChild("AchievementUnlocked") :: RemoteEvent
+local signalsFolder = ReplicatedStorage:WaitForChild("GatewayToHellSignals")
+local roundOutcomeResolved = signalsFolder:WaitForChild("RoundOutcomeResolved") :: BindableEvent
+
+local cacheByUserId = {}
+
+local ACHIEVEMENTS = {
+	FirstEscape = {
+		TitleAr = "أول هروب",
+		DescriptionAr = "نجوت من الجولة الأولى وحملت ضوء البوابة معك.",
+		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.FirstEscape,
+	},
+	NoDeathEscape = {
+		TitleAr = "نجاة جماعية",
+		DescriptionAr = "خرج الفريق دون أي وفاة واحدة.",
+		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.NoDeathsEscape,
+	},
+	NightmareClear = {
+		TitleAr = "قاهر الكابوس",
+		DescriptionAr = "أكملت جولة الكابوس وخرجت حيًا.",
+		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.NightmareClear,
+	},
+	HardcoreClear = {
+		TitleAr = "النجاة المستحيلة",
+		DescriptionAr = "تفوقت على وضع Hardcore الصارم.",
+		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.HardcoreClear,
+	},
+	SecretEnding = {
+		TitleAr = "سر البوابة",
+		DescriptionAr = "فتحت النهاية السرية عبر الطقس المخفي.",
+		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.SecretEnding,
+	},
+}
+
+local function defaultRecord()
+	return {
+		Unlocked = {},
+		Progress = {
+			Escapes = 0,
+			NoDeathClears = 0,
+			NightmareClears = 0,
+			HardcoreClears = 0,
+			SecretEndings = 0,
+		},
+	}
+end
+
+local function normalizeRecord(data)
+	local record = defaultRecord()
+	if type(data) ~= "table" then
+		return record
+	end
+
+	if type(data.Unlocked) == "table" then
+		for key, value in pairs(data.Unlocked) do
+			if type(key) == "string" and value == true then
+				record.Unlocked[key] = true
+			end
+		end
+	end
+
+	if type(data.Progress) == "table" then
+		record.Progress.Escapes = math.max(0, tonumber(data.Progress.Escapes) or 0)
+		record.Progress.NoDeathClears = math.max(0, tonumber(data.Progress.NoDeathClears) or 0)
+		record.Progress.NightmareClears = math.max(0, tonumber(data.Progress.NightmareClears) or 0)
+		record.Progress.HardcoreClears = math.max(0, tonumber(data.Progress.HardcoreClears) or 0)
+		record.Progress.SecretEndings = math.max(0, tonumber(data.Progress.SecretEndings) or 0)
+	end
+
+	return record
+end
+
+local function loadRecord(userId)
+	local success, data = pcall(function()
+		return ACHIEVEMENTS_STORE:GetAsync(tostring(userId))
+	end)
+
+	if success then
+		return normalizeRecord(data)
+	end
+
+	return defaultRecord()
+end
+
+local function saveRecord(userId)
+	local record = cacheByUserId[userId]
+	if not record then
+		return
+	end
+
+	pcall(function()
+		ACHIEVEMENTS_STORE:SetAsync(tostring(userId), record)
+	end)
+end
+
+local function awardBadge(player, badgeId)
+	if type(badgeId) ~= "number" or badgeId <= 0 then
+		return
+	end
+
+	pcall(function()
+		if not BadgeService:UserHasBadgeAsync(player.UserId, badgeId) then
+			BadgeService:AwardBadge(player.UserId, badgeId)
+		end
+	end)
+end
+
+local function notifyPlayer(player, achievementId)
+	local achievement = ACHIEVEMENTS[achievementId]
+	if not achievement then
+		return
+	end
+
+	achievementUnlockedEvent:FireClient(player, {
+		AchievementId = achievementId,
+		TitleAr = achievement.TitleAr,
+		DescriptionAr = achievement.DescriptionAr,
+	})
+
+	awardBadge(player, achievement.BadgeId)
+end
+
+local function countUnlocked(record)
+	local total = 0
+	for _, unlocked in pairs(record.Unlocked) do
+		if unlocked == true then
+			total += 1
+		end
+	end
+	return total
+end
+
+local function unlock(player, achievementId)
+	local achievement = ACHIEVEMENTS[achievementId]
+	if not achievement then
+		return
+	end
+
+	local record = cacheByUserId[player.UserId]
+	if not record then
+		record = defaultRecord()
+		cacheByUserId[player.UserId] = record
+	end
+
+	if record.Unlocked[achievementId] then
+		return
+	end
+
+	record.Unlocked[achievementId] = true
+	player:SetAttribute("AchievementCount", countUnlocked(record))
+	notifyPlayer(player, achievementId)
+	saveRecord(player.UserId)
+end
+
+local function syncPlayer(player)
+	local record = loadRecord(player.UserId)
+	cacheByUserId[player.UserId] = record
+	player:SetAttribute("AchievementCount", countUnlocked(record))
+end
+
+local function handleOutcome(payload)
+	if type(payload) ~= "table" then
+		return
+	end
+
+	local participants = {}
+	if type(payload.Participants) == "table" then
+		for _, participant in ipairs(payload.Participants) do
+			if type(participant) == "table" and type(participant.UserId) == "number" then
+				participants[participant.UserId] = participant
+			end
+		end
+	end
+
+	local didWin = payload.Result == "Win"
+	local endingType = payload.EndingType
+	local modeId = payload.ModeId
+	local hasNoDeaths = payload.HasNoDeaths == true
+	local secretComplete = payload.SecretObjectiveComplete == true or endingType == "Secret"
+
+	for _, player in ipairs(Players:GetPlayers()) do
+		local participant = participants[player.UserId]
+		if participant and participant.State == "Escaped" then
+			local record = cacheByUserId[player.UserId]
+			if record then
+				record.Progress.Escapes += 1
+			end
+			if record and record.Progress.Escapes == 1 then
+				unlock(player, "FirstEscape")
+			end
+
+			if didWin and hasNoDeaths then
+				if record then
+					record.Progress.NoDeathClears += 1
+				end
+				unlock(player, "NoDeathEscape")
+			end
+
+			if didWin and modeId == "Nightmare" then
+				if record then
+					record.Progress.NightmareClears += 1
+				end
+				unlock(player, "NightmareClear")
+			end
+
+			if didWin and modeId == "Hardcore" then
+				if record then
+					record.Progress.HardcoreClears += 1
+				end
+				unlock(player, "HardcoreClear")
+			end
+
+			if secretComplete then
+				if record then
+					record.Progress.SecretEndings += 1
+				end
+				unlock(player, "SecretEnding")
+			end
+		end
+	end
+
+	for userId, record in pairs(cacheByUserId) do
+		local player = Players:GetPlayerByUserId(userId)
+		if player then
+			player:SetAttribute("AchievementCount", countUnlocked(record))
+		end
+		saveRecord(userId)
+	end
+end
+
+Players.PlayerAdded:Connect(syncPlayer)
+Players.PlayerRemoving:Connect(function(player)
+	saveRecord(player.UserId)
+	cacheByUserId[player.UserId] = nil
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+	syncPlayer(player)
+end
+
+roundOutcomeResolved.Event:Connect(handleOutcome)
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="8">
+      <Properties>
+        <string name="Name">LeaderboardService</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local DataStoreService = game:GetService("DataStoreService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
+
+local RECORDS_STORE = DataStoreService:GetDataStore("GatewayToHell_PlayerRecords_v1")
+local WINS_BOARD = DataStoreService:GetOrderedDataStore("GatewayToHell_WinsBoard_v1")
+local REFRESH_INTERVAL = 60
+local SHOW_SAMPLE_WHEN_EMPTY = true
+local MAX_ENTRIES = 10
+local FETCH_LIMIT = 25
+
+local SAMPLE_ENTRIES = {
+    { UserId = 1, Name = "NightHunter", Wins = 11_178 },
+    { UserId = 2, Name = "AshWalker", Wins = 8_504 },
+    { UserId = 3, Name = "Mothveil", Wins = 7_219 },
+    { UserId = 4, Name = "Cinder", Wins = 6_886 },
+    { UserId = 5, Name = "GravePulse", Wins = 5_430 },
+    { UserId = 6, Name = "Noctis", Wins = 4_992 },
+    { UserId = 7, Name = "Ruin", Wins = 4_210 },
+    { UserId = 8, Name = "Specter", Wins = 3_771 },
+    { UserId = 9, Name = "Ember", Wins = 3_102 },
+    { UserId = 10, Name = "Ashen", Wins = 2_415 },
+}
+
+local leaderboardAnchor = Workspace:WaitForChild("LeaderboardAnchor")
+
+local function defaultRecord()
+    return {
+        Wins = 0,
+        FastestTime = 0,
+        Stars = 0,
+    }
+end
+
+local function getScore(record)
+    local wins = tonumber(record.Wins) or 0
+    local stars = tonumber(record.Stars) or 0
+    local fastestTime = tonumber(record.FastestTime) or 0
+    return wins * 100000 + stars * 100 - math.floor(fastestTime * 10)
+end
+
+local function loadRecord(userId)
+    local success, data = pcall(function()
+        return RECORDS_STORE:GetAsync(tostring(userId))
+    end)
+
+    if success and type(data) == "table" then
+        return {
+            Wins = tonumber(data.Wins) or 0,
+            FastestTime = tonumber(data.FastestTime) or 0,
+            Stars = tonumber(data.Stars) or 0,
+        }
+    end
+
+    return defaultRecord()
+end
+
+local function saveRecord(userId, record)
+    local payload = {
+        Wins = tonumber(record.Wins) or 0,
+        FastestTime = tonumber(record.FastestTime) or 0,
+        Stars = tonumber(record.Stars) or 0,
+    }
+
+    pcall(function()
+        RECORDS_STORE:SetAsync(tostring(userId), payload)
+    end)
+
+    pcall(function()
+        WINS_BOARD:SetAsync(tostring(userId), getScore(payload))
+    end)
+end
+
+local function ensureLeaderstats(player)
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if not leaderstats then
+        leaderstats = Instance.new("Folder")
+        leaderstats.Name = "leaderstats"
+        leaderstats.Parent = player
+    end
+
+    local wins = leaderstats:FindFirstChild("Wins") or Instance.new("IntValue")
+    wins.Name = "Wins"
+    wins.Parent = leaderstats
+
+    local stars = leaderstats:FindFirstChild("Stars") or Instance.new("IntValue")
+    stars.Name = "Stars"
+    stars.Parent = leaderstats
+
+    local fastestTime = leaderstats:FindFirstChild("FastestTime") or Instance.new("NumberValue")
+    fastestTime.Name = "FastestTime"
+    fastestTime.Parent = leaderstats
+
+    return leaderstats, wins, stars, fastestTime
+end
+
+local playerCache = {}
+
+local function syncPlayer(player)
+    local record = loadRecord(player.UserId)
+    playerCache[player.UserId] = record
+
+    local _, winsValue, starsValue, fastestValue = ensureLeaderstats(player)
+    winsValue.Value = record.Wins
+    starsValue.Value = record.Stars
+    fastestValue.Value = record.FastestTime
+end
+
+local function persistPlayer(player)
+    local record = playerCache[player.UserId]
+    if not record then
+        return
+    end
+
+    local leaderstats = player:FindFirstChild("leaderstats")
+    if leaderstats then
+        local wins = leaderstats:FindFirstChild("Wins")
+        local stars = leaderstats:FindFirstChild("Stars")
+        local fastestTime = leaderstats:FindFirstChild("FastestTime")
+        if wins and stars and fastestTime then
+            record.Wins = wins.Value
+            record.Stars = stars.Value
+            record.FastestTime = fastestTime.Value
+        end
+    end
+
+    saveRecord(player.UserId, record)
+    playerCache[player.UserId] = nil
+end
+
+local function formatWins(value)
+    local text = tostring(math.floor(tonumber(value) or 0))
+    local formatted = text:reverse():gsub("(%d%d%d)", "%1,"):reverse()
+    formatted = formatted:gsub("^,", "")
+    return `{formatted} انتصارات`
+end
+
+local function formatThousands(value)
+    return formatWins(value)
+end
+
+local function resolveUsername(userId)
+    local success, username = pcall(function()
+        return Players:GetNameFromUserIdAsync(userId)
+    end)
+
+    if success and username and username ~= "" then
+        return username
+    end
+
+    return `User {userId}`
+end
+
+local function avatarThumb(userId)
+    return `rbxthumb://type=AvatarHeadShot&id={userId}&w=150&h=150`
+end
+
+local boardGui = Instance.new("SurfaceGui")
+boardGui.Name = "LeaderboardBoard"
+boardGui.Face = Enum.NormalId.Front
+boardGui.LightInfluence = 0
+boardGui.AlwaysOnTop = true
+boardGui.PixelsPerStud = 40
+boardGui.ResetOnSpawn = false
+boardGui.Parent = leaderboardAnchor
+
+local root = Instance.new("Frame")
+root.Size = UDim2.fromScale(1, 1)
+root.BackgroundColor3 = GameConfig.COLORS.Panel
+root.BackgroundTransparency = 0.02
+root.BorderSizePixel = 0
+root.Parent = boardGui
+
+local frameStroke = Instance.new("UIStroke")
+frameStroke.Color = GameConfig.COLORS.AccentDim
+frameStroke.Thickness = 1
+frameStroke.Transparency = 0.18
+frameStroke.Parent = root
+
+local header = Instance.new("TextLabel")
+header.Size = UDim2.new(1, 0, 0.13, 0)
+header.BackgroundColor3 = Color3.fromRGB(19, 12, 16)
+header.BackgroundTransparency = 0.02
+header.BorderSizePixel = 0
+header.Text = "بوابة الجحيم • المتصدرون"
+header.Font = Enum.Font.GothamBlack
+header.TextColor3 = GameConfig.COLORS.AccentAlt
+header.TextScaled = true
+header.Parent = root
+
+local headerStroke = Instance.new("UIStroke")
+headerStroke.Color = GameConfig.COLORS.AccentDim
+headerStroke.Thickness = 1
+headerStroke.Transparency = 0.3
+headerStroke.Parent = header
+
+local subheader = Instance.new("TextLabel")
+subheader.Position = UDim2.new(0, 0, 0.13, 0)
+subheader.Size = UDim2.new(1, 0, 0.05, 0)
+subheader.BackgroundTransparency = 1
+subheader.Text = "Top 10 Wins"
+subheader.Font = Enum.Font.GothamMedium
+subheader.TextColor3 = GameConfig.COLORS.TextMuted
+subheader.TextScaled = true
+subheader.Parent = root
+
+local rowsContainer = Instance.new("Frame")
+rowsContainer.Position = UDim2.new(0.04, 0, 0.2, 0)
+rowsContainer.Size = UDim2.new(0.92, 0, 0.76, 0)
+rowsContainer.BackgroundTransparency = 1
+rowsContainer.Parent = root
+
+local rowsLayout = Instance.new("UIListLayout")
+rowsLayout.Padding = UDim.new(0, 6)
+rowsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+rowsLayout.Parent = rowsContainer
+
+local rowTemplates = {}
+
+local function makeLabel(parent, name, position, size, align)
+    local label = Instance.new("TextLabel")
+    label.Name = name
+    label.BackgroundTransparency = 1
+    label.Position = position
+    label.Size = size
+    label.Font = Enum.Font.GothamSemibold
+    label.TextColor3 = GameConfig.COLORS.Text
+    label.TextScaled = true
+    label.TextXAlignment = align or Enum.TextXAlignment.Left
+    label.Parent = parent
+    return label
+end
+
+local function makeRow(index)
+    local row = Instance.new("Frame")
+    row.Name = `Row{index}`
+    row.Size = UDim2.new(1, 0, 0.12, 0)
+    row.BackgroundColor3 = GameConfig.COLORS.PanelSoft
+    row.BackgroundTransparency = 0.05
+    row.BorderSizePixel = 0
+    row.Parent = rowsContainer
+
+    local rowStroke = Instance.new("UIStroke")
+    rowStroke.Color = GameConfig.COLORS.AccentDim
+    rowStroke.Thickness = 1
+    rowStroke.Transparency = 0.55
+    rowStroke.Parent = row
+
+    local rankLabel = makeLabel(row, "Rank", UDim2.new(0.02, 0, 0, 0), UDim2.new(0.07, 0, 1, 0), Enum.TextXAlignment.Left)
+    rankLabel.Font = Enum.Font.GothamBlack
+    rankLabel.TextColor3 = GameConfig.COLORS.AccentAlt
+
+    local avatar = Instance.new("ImageLabel")
+    avatar.Name = "Avatar"
+    avatar.BackgroundColor3 = Color3.fromRGB(12, 8, 10)
+    avatar.BorderSizePixel = 0
+    avatar.Position = UDim2.new(0.1, 0, 0.15, 0)
+    avatar.Size = UDim2.new(0.18, 0, 0.7, 0)
+    avatar.Image = ""
+    avatar.ScaleType = Enum.ScaleType.Crop
+    avatar.Parent = row
+
+    local avatarCorner = Instance.new("UICorner")
+    avatarCorner.CornerRadius = UDim.new(0, 6)
+    avatarCorner.Parent = avatar
+
+    local avatarStroke = Instance.new("UIStroke")
+    avatarStroke.Color = GameConfig.COLORS.AccentDim
+    avatarStroke.Thickness = 1
+    avatarStroke.Transparency = 0.2
+    avatarStroke.Parent = avatar
+
+    local nameLabel = makeLabel(row, "Name", UDim2.new(0.31, 0, 0, 0), UDim2.new(0.39, 0, 1, 0), Enum.TextXAlignment.Left)
+    nameLabel.Font = Enum.Font.GothamSemibold
+
+    local winsLabel = makeLabel(row, "Wins", UDim2.new(0.71, 0, 0, 0), UDim2.new(0.27, 0, 1, 0), Enum.TextXAlignment.Right)
+    winsLabel.Font = Enum.Font.GothamBold
+    winsLabel.TextColor3 = GameConfig.COLORS.Text
+
+    rowTemplates[index] = {
+        Row = row,
+        RankLabel = rankLabel,
+        AvatarLabel = avatar,
+        NameLabel = nameLabel,
+        WinsLabel = winsLabel,
+    }
+end
+
+for index = 1, MAX_ENTRIES do
+    makeRow(index)
+end
+
+local function resolveBoardEntries()
+    local success, pages = pcall(function()
+        return WINS_BOARD:GetSortedAsync(false, FETCH_LIMIT)
+    end)
+
+    if not success or not pages then
+        return {}
+    end
+
+    local rawEntries = {}
+    local page = pages:GetCurrentPage()
+    for _, item in ipairs(page) do
+        local userId = tonumber(item.key)
+        if userId then
+            local record = loadRecord(userId)
+            table.insert(rawEntries, {
+                UserId = userId,
+                Username = resolveUsername(userId),
+                Wins = tonumber(record.Wins) or 0,
+                Score = tonumber(item.value) or getScore(record),
+            })
+        end
+    end
+
+    table.sort(rawEntries, function(a, b)
+        if a.Wins == b.Wins then
+            if a.Score == b.Score then
+                return a.Username < b.Username
+            end
+            return a.Score > b.Score
+        end
+        return a.Wins > b.Wins
+    end)
+
+    local trimmed = {}
+    for index = 1, math.min(MAX_ENTRIES, #rawEntries) do
+        trimmed[index] = rawEntries[index]
+    end
+    return trimmed
+end
+
+local function applyEntry(row, index, entry)
+    row.Row.Visible = true
+    row.RankLabel.Text = `#{index}`
+    row.AvatarLabel.Image = avatarThumb(entry.UserId)
+    row.NameLabel.Text = entry.Username
+    row.WinsLabel.Text = formatThousands(entry.Wins)
+end
+
+local function applyPlaceholder(row, index)
+    row.Row.Visible = true
+    row.RankLabel.Text = `#{index}`
+    row.AvatarLabel.Image = ""
+    row.NameLabel.Text = "—"
+    row.WinsLabel.Text = "—"
+end
+
+local function applySampleBoard()
+    for index = 1, MAX_ENTRIES do
+        local row = rowTemplates[index]
+        local entry = SAMPLE_ENTRIES[index]
+        row.Row.Visible = true
+        row.RankLabel.Text = `#{index}`
+        row.AvatarLabel.Image = avatarThumb(entry.UserId)
+        row.NameLabel.Text = entry.Name
+        row.WinsLabel.Text = formatThousands(entry.Wins)
+    end
+end
+
+local function refreshBoard()
+    local entries = resolveBoardEntries()
+
+    if #entries == 0 and SHOW_SAMPLE_WHEN_EMPTY then
+        applySampleBoard()
+        return
+    end
+
+    for index = 1, MAX_ENTRIES do
+        local row = rowTemplates[index]
+        local entry = entries[index]
+        if entry then
+            applyEntry(row, index, entry)
+        else
+            applyPlaceholder(row, index)
+        end
+    end
+end
+
+Players.PlayerAdded:Connect(syncPlayer)
+Players.PlayerRemoving:Connect(function(player)
+    persistPlayer(player)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    syncPlayer(player)
+end
+
+game:BindToClose(function()
+    for _, player in ipairs(Players:GetPlayers()) do
+        persistPlayer(player)
+    end
+end)
+
+refreshBoard()
+task.spawn(function()
+    while task.wait(REFRESH_INTERVAL) do
+        refreshBoard()
+    end
+end)
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="9">
+      <Properties>
+        <string name="Name">LobbyBuilder</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
@@ -947,679 +2022,14 @@ for _, player in ipairs(Players:GetPlayers()) do
 end
 
 Players.PlayerAdded:Connect(announceReady)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000101">
-  <Properties>
-    <string name="Name">LeaderboardService</string>
-    <ProtectedString name="Source"><![CDATA[local DataStoreService = game:GetService("DataStoreService")
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Workspace = game:GetService("Workspace")
-
-local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
-
-local RECORDS_STORE = DataStoreService:GetDataStore("GatewayToHell_PlayerRecords_v1")
-local WINS_BOARD = DataStoreService:GetOrderedDataStore("GatewayToHell_WinsBoard_v1")
-local REFRESH_INTERVAL = 60
-local SHOW_SAMPLE_WHEN_EMPTY = true
-local MAX_ENTRIES = 10
-local FETCH_LIMIT = 25
-
-local SAMPLE_ENTRIES = {
-    { UserId = 1, Name = "NightHunter", Wins = 11_178 },
-    { UserId = 2, Name = "AshWalker", Wins = 8_504 },
-    { UserId = 3, Name = "Mothveil", Wins = 7_219 },
-    { UserId = 4, Name = "Cinder", Wins = 6_886 },
-    { UserId = 5, Name = "GravePulse", Wins = 5_430 },
-    { UserId = 6, Name = "Noctis", Wins = 4_992 },
-    { UserId = 7, Name = "Ruin", Wins = 4_210 },
-    { UserId = 8, Name = "Specter", Wins = 3_771 },
-    { UserId = 9, Name = "Ember", Wins = 3_102 },
-    { UserId = 10, Name = "Ashen", Wins = 2_415 },
-}
-
-local leaderboardAnchor = Workspace:WaitForChild("LeaderboardAnchor")
-
-local function defaultRecord()
-    return {
-        Wins = 0,
-        FastestTime = 0,
-        Stars = 0,
-    }
-end
-
-local function getScore(record)
-    local wins = tonumber(record.Wins) or 0
-    local stars = tonumber(record.Stars) or 0
-    local fastestTime = tonumber(record.FastestTime) or 0
-    return wins * 100000 + stars * 100 - math.floor(fastestTime * 10)
-end
-
-local function loadRecord(userId)
-    local success, data = pcall(function()
-        return RECORDS_STORE:GetAsync(tostring(userId))
-    end)
-
-    if success and type(data) == "table" then
-        return {
-            Wins = tonumber(data.Wins) or 0,
-            FastestTime = tonumber(data.FastestTime) or 0,
-            Stars = tonumber(data.Stars) or 0,
-        }
-    end
-
-    return defaultRecord()
-end
-
-local function saveRecord(userId, record)
-    local payload = {
-        Wins = tonumber(record.Wins) or 0,
-        FastestTime = tonumber(record.FastestTime) or 0,
-        Stars = tonumber(record.Stars) or 0,
-    }
-
-    pcall(function()
-        RECORDS_STORE:SetAsync(tostring(userId), payload)
-    end)
-
-    pcall(function()
-        WINS_BOARD:SetAsync(tostring(userId), getScore(payload))
-    end)
-end
-
-local function ensureLeaderstats(player)
-    local leaderstats = player:FindFirstChild("leaderstats")
-    if not leaderstats then
-        leaderstats = Instance.new("Folder")
-        leaderstats.Name = "leaderstats"
-        leaderstats.Parent = player
-    end
-
-    local wins = leaderstats:FindFirstChild("Wins") or Instance.new("IntValue")
-    wins.Name = "Wins"
-    wins.Parent = leaderstats
-
-    local stars = leaderstats:FindFirstChild("Stars") or Instance.new("IntValue")
-    stars.Name = "Stars"
-    stars.Parent = leaderstats
-
-    local fastestTime = leaderstats:FindFirstChild("FastestTime") or Instance.new("NumberValue")
-    fastestTime.Name = "FastestTime"
-    fastestTime.Parent = leaderstats
-
-    return leaderstats, wins, stars, fastestTime
-end
-
-local playerCache = {}
-
-local function syncPlayer(player)
-    local record = loadRecord(player.UserId)
-    playerCache[player.UserId] = record
-
-    local _, winsValue, starsValue, fastestValue = ensureLeaderstats(player)
-    winsValue.Value = record.Wins
-    starsValue.Value = record.Stars
-    fastestValue.Value = record.FastestTime
-end
-
-local function persistPlayer(player)
-    local record = playerCache[player.UserId]
-    if not record then
-        return
-    end
-
-    local leaderstats = player:FindFirstChild("leaderstats")
-    if leaderstats then
-        local wins = leaderstats:FindFirstChild("Wins")
-        local stars = leaderstats:FindFirstChild("Stars")
-        local fastestTime = leaderstats:FindFirstChild("FastestTime")
-        if wins and stars and fastestTime then
-            record.Wins = wins.Value
-            record.Stars = stars.Value
-            record.FastestTime = fastestTime.Value
-        end
-    end
-
-    saveRecord(player.UserId, record)
-    playerCache[player.UserId] = nil
-end
-
-local function formatWins(value)
-    local text = tostring(math.floor(tonumber(value) or 0))
-    local formatted = text:reverse():gsub("(%d%d%d)", "%1,"):reverse()
-    formatted = formatted:gsub("^,", "")
-    return `{formatted} انتصارات`
-end
-
-local function formatThousands(value)
-    return formatWins(value)
-end
-
-local function resolveUsername(userId)
-    local success, username = pcall(function()
-        return Players:GetNameFromUserIdAsync(userId)
-    end)
-
-    if success and username and username ~= "" then
-        return username
-    end
-
-    return `User {userId}`
-end
-
-local function avatarThumb(userId)
-    return `rbxthumb://type=AvatarHeadShot&id={userId}&w=150&h=150`
-end
-
-local boardGui = Instance.new("SurfaceGui")
-boardGui.Name = "LeaderboardBoard"
-boardGui.Face = Enum.NormalId.Front
-boardGui.LightInfluence = 0
-boardGui.AlwaysOnTop = true
-boardGui.PixelsPerStud = 40
-boardGui.ResetOnSpawn = false
-boardGui.Parent = leaderboardAnchor
-
-local root = Instance.new("Frame")
-root.Size = UDim2.fromScale(1, 1)
-root.BackgroundColor3 = GameConfig.COLORS.Panel
-root.BackgroundTransparency = 0.02
-root.BorderSizePixel = 0
-root.Parent = boardGui
-
-local frameStroke = Instance.new("UIStroke")
-frameStroke.Color = GameConfig.COLORS.AccentDim
-frameStroke.Thickness = 1
-frameStroke.Transparency = 0.18
-frameStroke.Parent = root
-
-local header = Instance.new("TextLabel")
-header.Size = UDim2.new(1, 0, 0.13, 0)
-header.BackgroundColor3 = Color3.fromRGB(19, 12, 16)
-header.BackgroundTransparency = 0.02
-header.BorderSizePixel = 0
-header.Text = "بوابة الجحيم • المتصدرون"
-header.Font = Enum.Font.GothamBlack
-header.TextColor3 = GameConfig.COLORS.AccentAlt
-header.TextScaled = true
-header.Parent = root
-
-local headerStroke = Instance.new("UIStroke")
-headerStroke.Color = GameConfig.COLORS.AccentDim
-headerStroke.Thickness = 1
-headerStroke.Transparency = 0.3
-headerStroke.Parent = header
-
-local subheader = Instance.new("TextLabel")
-subheader.Position = UDim2.new(0, 0, 0.13, 0)
-subheader.Size = UDim2.new(1, 0, 0.05, 0)
-subheader.BackgroundTransparency = 1
-subheader.Text = "Top 10 Wins"
-subheader.Font = Enum.Font.GothamMedium
-subheader.TextColor3 = GameConfig.COLORS.TextMuted
-subheader.TextScaled = true
-subheader.Parent = root
-
-local rowsContainer = Instance.new("Frame")
-rowsContainer.Position = UDim2.new(0.04, 0, 0.2, 0)
-rowsContainer.Size = UDim2.new(0.92, 0, 0.76, 0)
-rowsContainer.BackgroundTransparency = 1
-rowsContainer.Parent = root
-
-local rowsLayout = Instance.new("UIListLayout")
-rowsLayout.Padding = UDim.new(0, 6)
-rowsLayout.SortOrder = Enum.SortOrder.LayoutOrder
-rowsLayout.Parent = rowsContainer
-
-local rowTemplates = {}
-
-local function makeLabel(parent, name, position, size, align)
-    local label = Instance.new("TextLabel")
-    label.Name = name
-    label.BackgroundTransparency = 1
-    label.Position = position
-    label.Size = size
-    label.Font = Enum.Font.GothamSemibold
-    label.TextColor3 = GameConfig.COLORS.Text
-    label.TextScaled = true
-    label.TextXAlignment = align or Enum.TextXAlignment.Left
-    label.Parent = parent
-    return label
-end
-
-local function makeRow(index)
-    local row = Instance.new("Frame")
-    row.Name = `Row{index}`
-    row.Size = UDim2.new(1, 0, 0.12, 0)
-    row.BackgroundColor3 = GameConfig.COLORS.PanelSoft
-    row.BackgroundTransparency = 0.05
-    row.BorderSizePixel = 0
-    row.Parent = rowsContainer
-
-    local rowStroke = Instance.new("UIStroke")
-    rowStroke.Color = GameConfig.COLORS.AccentDim
-    rowStroke.Thickness = 1
-    rowStroke.Transparency = 0.55
-    rowStroke.Parent = row
-
-    local rankLabel = makeLabel(row, "Rank", UDim2.new(0.02, 0, 0, 0), UDim2.new(0.07, 0, 1, 0), Enum.TextXAlignment.Left)
-    rankLabel.Font = Enum.Font.GothamBlack
-    rankLabel.TextColor3 = GameConfig.COLORS.AccentAlt
-
-    local avatar = Instance.new("ImageLabel")
-    avatar.Name = "Avatar"
-    avatar.BackgroundColor3 = Color3.fromRGB(12, 8, 10)
-    avatar.BorderSizePixel = 0
-    avatar.Position = UDim2.new(0.1, 0, 0.15, 0)
-    avatar.Size = UDim2.new(0.18, 0, 0.7, 0)
-    avatar.Image = ""
-    avatar.ScaleType = Enum.ScaleType.Crop
-    avatar.Parent = row
-
-    local avatarCorner = Instance.new("UICorner")
-    avatarCorner.CornerRadius = UDim.new(0, 6)
-    avatarCorner.Parent = avatar
-
-    local avatarStroke = Instance.new("UIStroke")
-    avatarStroke.Color = GameConfig.COLORS.AccentDim
-    avatarStroke.Thickness = 1
-    avatarStroke.Transparency = 0.2
-    avatarStroke.Parent = avatar
-
-    local nameLabel = makeLabel(row, "Name", UDim2.new(0.31, 0, 0, 0), UDim2.new(0.39, 0, 1, 0), Enum.TextXAlignment.Left)
-    nameLabel.Font = Enum.Font.GothamSemibold
-
-    local winsLabel = makeLabel(row, "Wins", UDim2.new(0.71, 0, 0, 0), UDim2.new(0.27, 0, 1, 0), Enum.TextXAlignment.Right)
-    winsLabel.Font = Enum.Font.GothamBold
-    winsLabel.TextColor3 = GameConfig.COLORS.Text
-
-    rowTemplates[index] = {
-        Row = row,
-        RankLabel = rankLabel,
-        AvatarLabel = avatar,
-        NameLabel = nameLabel,
-        WinsLabel = winsLabel,
-    }
-end
-
-for index = 1, MAX_ENTRIES do
-    makeRow(index)
-end
-
-local function resolveBoardEntries()
-    local success, pages = pcall(function()
-        return WINS_BOARD:GetSortedAsync(false, FETCH_LIMIT)
-    end)
-
-    if not success or not pages then
-        return {}
-    end
-
-    local rawEntries = {}
-    local page = pages:GetCurrentPage()
-    for _, item in ipairs(page) do
-        local userId = tonumber(item.key)
-        if userId then
-            local record = loadRecord(userId)
-            table.insert(rawEntries, {
-                UserId = userId,
-                Username = resolveUsername(userId),
-                Wins = tonumber(record.Wins) or 0,
-                Score = tonumber(item.value) or getScore(record),
-            })
-        end
-    end
-
-    table.sort(rawEntries, function(a, b)
-        if a.Wins == b.Wins then
-            if a.Score == b.Score then
-                return a.Username < b.Username
-            end
-            return a.Score > b.Score
-        end
-        return a.Wins > b.Wins
-    end)
-
-    local trimmed = {}
-    for index = 1, math.min(MAX_ENTRIES, #rawEntries) do
-        trimmed[index] = rawEntries[index]
-    end
-    return trimmed
-end
-
-local function applyEntry(row, index, entry)
-    row.Row.Visible = true
-    row.RankLabel.Text = `#{index}`
-    row.AvatarLabel.Image = avatarThumb(entry.UserId)
-    row.NameLabel.Text = entry.Username
-    row.WinsLabel.Text = formatThousands(entry.Wins)
-end
-
-local function applyPlaceholder(row, index)
-    row.Row.Visible = true
-    row.RankLabel.Text = `#{index}`
-    row.AvatarLabel.Image = ""
-    row.NameLabel.Text = "—"
-    row.WinsLabel.Text = "—"
-end
-
-local function applySampleBoard()
-    for index = 1, MAX_ENTRIES do
-        local row = rowTemplates[index]
-        local entry = SAMPLE_ENTRIES[index]
-        row.Row.Visible = true
-        row.RankLabel.Text = `#{index}`
-        row.AvatarLabel.Image = avatarThumb(entry.UserId)
-        row.NameLabel.Text = entry.Name
-        row.WinsLabel.Text = formatThousands(entry.Wins)
-    end
-end
-
-local function refreshBoard()
-    local entries = resolveBoardEntries()
-
-    if #entries == 0 and SHOW_SAMPLE_WHEN_EMPTY then
-        applySampleBoard()
-        return
-    end
-
-    for index = 1, MAX_ENTRIES do
-        local row = rowTemplates[index]
-        local entry = entries[index]
-        if entry then
-            applyEntry(row, index, entry)
-        else
-            applyPlaceholder(row, index)
-        end
-    end
-end
-
-Players.PlayerAdded:Connect(syncPlayer)
-Players.PlayerRemoving:Connect(function(player)
-    persistPlayer(player)
-end)
-
-for _, player in ipairs(Players:GetPlayers()) do
-    syncPlayer(player)
-end
-
-game:BindToClose(function()
-    for _, player in ipairs(Players:GetPlayers()) do
-        persistPlayer(player)
-    end
-end)
-
-refreshBoard()
-task.spawn(function()
-    while task.wait(REFRESH_INTERVAL) do
-        refreshBoard()
-    end
-end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000102">
-  <Properties>
-    <string name="Name">AchievementsService</string>
-    <ProtectedString name="Source"><![CDATA[local BadgeService = game:GetService("BadgeService")
-local DataStoreService = game:GetService("DataStoreService")
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
-
-local ACHIEVEMENTS_STORE = DataStoreService:GetDataStore("GatewayToHell_Achievements_v1")
-local remotesFolder = ReplicatedStorage:WaitForChild("GatewayToHellRemotes")
-local achievementUnlockedEvent = remotesFolder:WaitForChild("AchievementUnlocked") :: RemoteEvent
-local signalsFolder = ReplicatedStorage:WaitForChild("GatewayToHellSignals")
-local roundOutcomeResolved = signalsFolder:WaitForChild("RoundOutcomeResolved") :: BindableEvent
-
-local cacheByUserId = {}
-
-local ACHIEVEMENTS = {
-	FirstEscape = {
-		TitleAr = "أول هروب",
-		DescriptionAr = "نجوت من الجولة الأولى وحملت ضوء البوابة معك.",
-		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.FirstEscape,
-	},
-	NoDeathEscape = {
-		TitleAr = "نجاة جماعية",
-		DescriptionAr = "خرج الفريق دون أي وفاة واحدة.",
-		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.NoDeathsEscape,
-	},
-	NightmareClear = {
-		TitleAr = "قاهر الكابوس",
-		DescriptionAr = "أكملت جولة الكابوس وخرجت حيًا.",
-		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.NightmareClear,
-	},
-	HardcoreClear = {
-		TitleAr = "النجاة المستحيلة",
-		DescriptionAr = "تفوقت على وضع Hardcore الصارم.",
-		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.HardcoreClear,
-	},
-	SecretEnding = {
-		TitleAr = "سر البوابة",
-		DescriptionAr = "فتحت النهاية السرية عبر الطقس المخفي.",
-		BadgeId = GameConfig.PLACEHOLDER_BADGE_IDS.SecretEnding,
-	},
-}
-
-local function defaultRecord()
-	return {
-		Unlocked = {},
-		Progress = {
-			Escapes = 0,
-			NoDeathClears = 0,
-			NightmareClears = 0,
-			HardcoreClears = 0,
-			SecretEndings = 0,
-		},
-	}
-end
-
-local function normalizeRecord(data)
-	local record = defaultRecord()
-	if type(data) ~= "table" then
-		return record
-	end
-
-	if type(data.Unlocked) == "table" then
-		for key, value in pairs(data.Unlocked) do
-			if type(key) == "string" and value == true then
-				record.Unlocked[key] = true
-			end
-		end
-	end
-
-	if type(data.Progress) == "table" then
-		record.Progress.Escapes = math.max(0, tonumber(data.Progress.Escapes) or 0)
-		record.Progress.NoDeathClears = math.max(0, tonumber(data.Progress.NoDeathClears) or 0)
-		record.Progress.NightmareClears = math.max(0, tonumber(data.Progress.NightmareClears) or 0)
-		record.Progress.HardcoreClears = math.max(0, tonumber(data.Progress.HardcoreClears) or 0)
-		record.Progress.SecretEndings = math.max(0, tonumber(data.Progress.SecretEndings) or 0)
-	end
-
-	return record
-end
-
-local function loadRecord(userId)
-	local success, data = pcall(function()
-		return ACHIEVEMENTS_STORE:GetAsync(tostring(userId))
-	end)
-
-	if success then
-		return normalizeRecord(data)
-	end
-
-	return defaultRecord()
-end
-
-local function saveRecord(userId)
-	local record = cacheByUserId[userId]
-	if not record then
-		return
-	end
-
-	pcall(function()
-		ACHIEVEMENTS_STORE:SetAsync(tostring(userId), record)
-	end)
-end
-
-local function awardBadge(player, badgeId)
-	if type(badgeId) ~= "number" or badgeId <= 0 then
-		return
-	end
-
-	pcall(function()
-		if not BadgeService:UserHasBadgeAsync(player.UserId, badgeId) then
-			BadgeService:AwardBadge(player.UserId, badgeId)
-		end
-	end)
-end
-
-local function notifyPlayer(player, achievementId)
-	local achievement = ACHIEVEMENTS[achievementId]
-	if not achievement then
-		return
-	end
-
-	achievementUnlockedEvent:FireClient(player, {
-		AchievementId = achievementId,
-		TitleAr = achievement.TitleAr,
-		DescriptionAr = achievement.DescriptionAr,
-	})
-
-	awardBadge(player, achievement.BadgeId)
-end
-
-local function countUnlocked(record)
-	local total = 0
-	for _, unlocked in pairs(record.Unlocked) do
-		if unlocked == true then
-			total += 1
-		end
-	end
-	return total
-end
-
-local function unlock(player, achievementId)
-	local achievement = ACHIEVEMENTS[achievementId]
-	if not achievement then
-		return
-	end
-
-	local record = cacheByUserId[player.UserId]
-	if not record then
-		record = defaultRecord()
-		cacheByUserId[player.UserId] = record
-	end
-
-	if record.Unlocked[achievementId] then
-		return
-	end
-
-	record.Unlocked[achievementId] = true
-	player:SetAttribute("AchievementCount", countUnlocked(record))
-	notifyPlayer(player, achievementId)
-	saveRecord(player.UserId)
-end
-
-local function syncPlayer(player)
-	local record = loadRecord(player.UserId)
-	cacheByUserId[player.UserId] = record
-	player:SetAttribute("AchievementCount", countUnlocked(record))
-end
-
-local function handleOutcome(payload)
-	if type(payload) ~= "table" then
-		return
-	end
-
-	local participants = {}
-	if type(payload.Participants) == "table" then
-		for _, participant in ipairs(payload.Participants) do
-			if type(participant) == "table" and type(participant.UserId) == "number" then
-				participants[participant.UserId] = participant
-			end
-		end
-	end
-
-	local didWin = payload.Result == "Win"
-	local endingType = payload.EndingType
-	local modeId = payload.ModeId
-	local hasNoDeaths = payload.HasNoDeaths == true
-	local secretComplete = payload.SecretObjectiveComplete == true or endingType == "Secret"
-
-	for _, player in ipairs(Players:GetPlayers()) do
-		local participant = participants[player.UserId]
-		if participant and participant.State == "Escaped" then
-			local record = cacheByUserId[player.UserId]
-			if record then
-				record.Progress.Escapes += 1
-			end
-			if record and record.Progress.Escapes == 1 then
-				unlock(player, "FirstEscape")
-			end
-
-			if didWin and hasNoDeaths then
-				if record then
-					record.Progress.NoDeathClears += 1
-				end
-				unlock(player, "NoDeathEscape")
-			end
-
-			if didWin and modeId == "Nightmare" then
-				if record then
-					record.Progress.NightmareClears += 1
-				end
-				unlock(player, "NightmareClear")
-			end
-
-			if didWin and modeId == "Hardcore" then
-				if record then
-					record.Progress.HardcoreClears += 1
-				end
-				unlock(player, "HardcoreClear")
-			end
-
-			if secretComplete then
-				if record then
-					record.Progress.SecretEndings += 1
-				end
-				unlock(player, "SecretEnding")
-			end
-		end
-	end
-
-	for userId, record in pairs(cacheByUserId) do
-		local player = Players:GetPlayerByUserId(userId)
-		if player then
-			player:SetAttribute("AchievementCount", countUnlocked(record))
-		end
-		saveRecord(userId)
-	end
-end
-
-Players.PlayerAdded:Connect(syncPlayer)
-Players.PlayerRemoving:Connect(function(player)
-	saveRecord(player.UserId)
-	cacheByUserId[player.UserId] = nil
-end)
-
-for _, player in ipairs(Players:GetPlayers()) do
-	syncPlayer(player)
-end
-
-roundOutcomeResolved.Event:Connect(handleOutcome)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000103">
-  <Properties>
-    <string name="Name">MatchmakingService</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="10">
+      <Properties>
+        <string name="Name">MatchmakingService</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 
@@ -1847,13 +2257,541 @@ Players.PlayerRemoving:Connect(function(player)
 	playerInCircle[player.UserId] = nil
 	removePlayerFromAllQueues(player.UserId)
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000104">
-  <Properties>
-    <string name="Name">RoundService</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="11">
+      <Properties>
+        <string name="Name">MonsterService</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local PathfindingService = game:GetService("PathfindingService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
+
+local signalsFolder = ReplicatedStorage:WaitForChild("GatewayToHellSignals")
+local huntStartRequested = signalsFolder:WaitForChild("HuntStartRequested") :: BindableEvent
+local huntStopRequested = signalsFolder:WaitForChild("HuntStopRequested") :: BindableEvent
+local monsterCaughtPlayer = signalsFolder:WaitForChild("MonsterCaughtPlayer") :: BindableEvent
+local monsterStateUpdated = signalsFolder:WaitForChild("MonsterStateUpdated") :: BindableEvent
+
+local geometryRoot = Workspace:WaitForChild("StoryMapGeometry")
+
+local monsterModel = nil
+local monsterHumanoid = nil
+local monsterRoot = nil
+
+local activeHuntId = 0
+local huntActive = false
+local trackedPlayers = {}
+local patrolPoints = {}
+local patrolIndex = 1
+local state = "Idle"
+local targetPlayer = nil
+local lastKnownPosition = nil
+local currentGoal = nil
+local currentPath = nil
+local pathIndex = 1
+local nextRepathAt = 0
+local nextRelocateAt = 0
+local lastTelemetryAt = 0
+local lastCatchAt = 0
+local lastSearchTarget = nil
+
+local VISION_RANGE = 80
+local HEARING_RANGE = 60
+local CHASE_SPEED = 24
+local PATROL_SPEED = 14
+local INVESTIGATE_SPEED = 18
+local CATCH_RANGE = 5
+local REPATH_INTERVAL = 0.7
+local TELEMETRY_INTERVAL = 0.25
+local SEARCH_RELOCATE_MIN = 120
+local SEARCH_RELOCATE_MAX = 180
+local currentModeTuning = GameConfig.MODE_TUNING[GameConfig.DEFAULT_MODE_ID]
+local currentModeId = GameConfig.DEFAULT_MODE_ID
+
+local function getVisionRange()
+	return currentModeTuning.Monster.VisionRange or VISION_RANGE
+end
+
+local function getHearingRange()
+	return currentModeTuning.Monster.HearingRange or HEARING_RANGE
+end
+
+local function getCatchRange()
+	return currentModeTuning.Monster.CatchRange or CATCH_RANGE
+end
+
+local function getSpeedMultiplier()
+	return currentModeTuning.Monster.SpeedMultiplier or 1
+end
+
+local function getSearchRelocateMin()
+	return currentModeTuning.Monster.SearchRelocateMin or SEARCH_RELOCATE_MIN
+end
+
+local function getSearchRelocateMax()
+	return currentModeTuning.Monster.SearchRelocateMax or SEARCH_RELOCATE_MAX
+end
+
+local function safeDestroy(instance)
+	if instance and instance.Parent then
+		pcall(function()
+			instance:Destroy()
+		end)
+	end
+end
+
+local function makePart(parent, name, size, cframe, color, material, transparency)
+	local part = Instance.new("Part")
+	part.Name = name
+	part.Size = size
+	part.CFrame = cframe
+	part.Color = color
+	part.Material = material
+	part.Transparency = transparency or 0
+	part.Anchored = false
+	part.CanCollide = false
+	part.CanTouch = true
+	part.CanQuery = false
+	part.Massless = true
+	part.Parent = parent
+	return part
+end
+
+local function weldToRoot(part, root)
+	local weld = Instance.new("WeldConstraint")
+	weld.Part0 = part
+	weld.Part1 = root
+	weld.Parent = part
+end
+
+local function createMonsterModel()
+	safeDestroy(monsterModel)
+
+	local model = Instance.new("Model")
+	model.Name = "GuardianOfHell"
+	model.Parent = Workspace
+	local spawnPoint = geometryRoot:WaitForChild("MonsterSpawnPoint") :: BasePart
+
+	local root = makePart(model, "HumanoidRootPart", Vector3.new(2.6, 3.4, 1.9), spawnPoint.CFrame, Color3.fromRGB(18, 12, 16), Enum.Material.Slate, 1)
+	root.RootPriority = 10
+	root.CanCollide = false
+
+	local humanoid = Instance.new("Humanoid")
+	humanoid.Name = "GuardianHumanoid"
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+	humanoid.WalkSpeed = PATROL_SPEED
+	humanoid.JumpPower = 40
+	humanoid.HipHeight = 0
+	humanoid.AutoRotate = true
+	humanoid.Parent = model
+
+	local torso = makePart(model, "Torso", Vector3.new(4.2, 5.2, 3.2), root.CFrame * CFrame.new(0, 0.5, 0), Color3.fromRGB(25, 18, 22), Enum.Material.Slate)
+	local head = makePart(model, "Head", Vector3.new(2.8, 2.8, 2.6), root.CFrame * CFrame.new(0, 3.7, 0), Color3.fromRGB(25, 18, 22), Enum.Material.Slate)
+	local armL = makePart(model, "LeftArm", Vector3.new(1.1, 4.2, 1.1), root.CFrame * CFrame.new(-2.8, 0.9, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
+	local armR = makePart(model, "RightArm", Vector3.new(1.1, 4.2, 1.1), root.CFrame * CFrame.new(2.8, 0.9, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
+	local legL = makePart(model, "LeftLeg", Vector3.new(1.2, 4.5, 1.2), root.CFrame * CFrame.new(-1.0, -3.8, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
+	local legR = makePart(model, "RightLeg", Vector3.new(1.2, 4.5, 1.2), root.CFrame * CFrame.new(1.0, -3.8, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
+	local hornL = makePart(model, "HornL", Vector3.new(0.7, 3.5, 0.7), root.CFrame * CFrame.new(-1.3, 5.0, -0.6) * CFrame.Angles(0, 0, math.rad(-25)), Color3.fromRGB(18, 14, 16), Enum.Material.Slate)
+	local hornR = makePart(model, "HornR", Vector3.new(0.7, 3.5, 0.7), root.CFrame * CFrame.new(1.3, 5.0, -0.6) * CFrame.Angles(0, 0, math.rad(25)), Color3.fromRGB(18, 14, 16), Enum.Material.Slate)
+	local eyeL = makePart(model, "EyeL", Vector3.new(0.24, 0.24, 0.24), root.CFrame * CFrame.new(-0.55, 3.8, -1.2), Color3.fromRGB(255, 52, 20), Enum.Material.Neon)
+	local eyeR = makePart(model, "EyeR", Vector3.new(0.24, 0.24, 0.24), root.CFrame * CFrame.new(0.55, 3.8, -1.2), Color3.fromRGB(255, 52, 20), Enum.Material.Neon)
+	local glow = makePart(model, "Glow", Vector3.new(6, 7, 0.2), root.CFrame * CFrame.new(0, 1.4, -1.0), Color3.fromRGB(255, 82, 35), Enum.Material.Neon, 0.65)
+
+	for _, part in ipairs({ torso, head, armL, armR, legL, legR, hornL, hornR, eyeL, eyeR, glow }) do
+		weldToRoot(part, root)
+	end
+
+	local light = Instance.new("PointLight")
+	light.Color = Color3.fromRGB(255, 78, 36)
+	light.Range = 18
+	light.Brightness = 1.5
+	light.Shadows = true
+	light.Parent = glow
+
+	model.PrimaryPart = root
+	model:PivotTo(spawnPoint.CFrame)
+
+	monsterModel = model
+	monsterHumanoid = humanoid
+	monsterRoot = root
+	return model, humanoid, root
+end
+
+local function getWaypoints()
+	local folder = geometryRoot:FindFirstChild("MonsterWaypoints")
+	local items = {}
+
+	if folder then
+		for _, child in ipairs(folder:GetChildren()) do
+			if child:IsA("BasePart") then
+				table.insert(items, child)
+			end
+		end
+		table.sort(items, function(a, b)
+			return a.Name < b.Name
+		end)
+	end
+
+	local positions = {}
+	for _, part in ipairs(items) do
+		table.insert(positions, part.Position)
+	end
+
+	if #positions == 0 then
+		positions = {
+			geometryRoot:FindFirstChild("MonsterSpawnPoint").Position,
+			geometryRoot:FindFirstChild("StoryEntranceSpawn").Position,
+			geometryRoot:FindFirstChild("StoryExitGate").Position,
+		}
+	end
+
+	return positions
+end
+
+local function setState(newState, payload)
+	state = newState
+	monsterStateUpdated:Fire({
+		State = state,
+		TargetUserId = payload and payload.TargetUserId or nil,
+		TargetName = payload and payload.TargetName or nil,
+		Distance = payload and payload.Distance or nil,
+		Intensity = payload and payload.Intensity or 0,
+		SearchTarget = payload and payload.SearchTarget or nil,
+		LastKnownPosition = payload and payload.LastKnownPosition or nil,
+		Position = payload and payload.Position or nil,
+		ModeId = payload and payload.ModeId or currentModeId,
+	})
+end
+
+local function getTrackedPlayerCharacters()
+	local results = {}
+	for _, player in ipairs(trackedPlayers) do
+		if player.Parent == Players then
+			local character = player.Character
+			local hrp = character and character:FindFirstChild("HumanoidRootPart")
+			local hum = character and character:FindFirstChildOfClass("Humanoid")
+			local status = character and character:GetAttribute("GatewayStatus")
+			local hidden = character and character:GetAttribute("GatewayHidden")
+			if character and hrp and hum and status == "Alive" and not hidden then
+				table.insert(results, { Player = player, Character = character, HumanoidRootPart = hrp, Humanoid = hum })
+			end
+		end
+	end
+	return results
+end
+
+local function hasLineOfSight(targetCharacter)
+	if not monsterRoot then
+		return false
+	end
+
+	local targetRoot = targetCharacter.HumanoidRootPart
+	local direction = targetRoot.Position - monsterRoot.Position
+	if direction.Magnitude <= 0 then
+		return true
+	end
+
+	local coneDot = monsterRoot.CFrame.LookVector:Dot(direction.Unit)
+	if coneDot < 0.15 then
+		return false
+	end
+
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = { monsterModel }
+	params.IgnoreWater = true
+
+	local hit = Workspace:Raycast(monsterRoot.Position + Vector3.new(0, 2, 0), direction, params)
+	if not hit then
+		return true
+	end
+
+	return hit.Instance:IsDescendantOf(targetCharacter.Character)
+end
+
+local function pickTarget()
+	local candidates = getTrackedPlayerCharacters()
+	local best = nil
+	local bestScore = math.huge
+
+	for _, entry in ipairs(candidates) do
+		local distance = (entry.HumanoidRootPart.Position - monsterRoot.Position).Magnitude
+		if distance <= getVisionRange() then
+			local visible = hasLineOfSight(entry)
+			local speed = entry.HumanoidRootPart.AssemblyLinearVelocity.Magnitude
+			local loud = speed >= 10 or entry.Humanoid.WalkSpeed >= 18
+			if visible then
+				local score = distance - math.clamp(speed, 0, 20) * 0.5
+				if score < bestScore then
+					best = { Player = entry.Player, Distance = distance, Visible = true }
+					bestScore = score
+				end
+			elseif distance <= getHearingRange() and loud then
+				local score = distance + 15
+				if score < bestScore then
+					best = { Player = entry.Player, Distance = distance, Visible = false }
+					bestScore = score
+				end
+			end
+		end
+	end
+
+	return best
+end
+
+local function planPath(goalPosition)
+	if not monsterHumanoid or not monsterRoot then
+		return {}
+	end
+
+	local path = PathfindingService:CreatePath({
+		AgentRadius = 2,
+		AgentHeight = 7,
+		AgentCanJump = true,
+		AgentCanClimb = true,
+	})
+
+	local waypoints = {}
+	local ok = pcall(function()
+		path:ComputeAsync(monsterRoot.Position, goalPosition)
+	end)
+
+	if ok and path.Status == Enum.PathStatus.Success then
+		waypoints = path:GetWaypoints()
+	else
+		waypoints = { { Position = goalPosition, Action = Enum.PathWaypointAction.Walk } }
+	end
+
+	return waypoints
+end
+
+local function refreshNavigation(goalPosition, useSearchTarget)
+	currentGoal = goalPosition
+	currentPath = planPath(goalPosition)
+	pathIndex = 1
+	nextRepathAt = os.clock() + REPATH_INTERVAL
+	if useSearchTarget then
+		lastSearchTarget = goalPosition
+	end
+end
+
+local function advanceNavigation()
+	if not monsterHumanoid or not monsterRoot or not currentPath then
+		return
+	end
+
+	local waypoint = currentPath[pathIndex]
+	if not waypoint then
+		return
+	end
+
+	local destination = waypoint.Position
+	if (monsterRoot.Position - destination).Magnitude <= 4 then
+		pathIndex += 1
+		return
+	end
+
+	if waypoint.Action == Enum.PathWaypointAction.Jump then
+		monsterHumanoid.Jump = true
+	end
+
+	monsterHumanoid:MoveTo(destination)
+end
+
+local function choosePatrolTarget()
+	if #patrolPoints == 0 then
+		return geometryRoot:FindFirstChild("StoryExitGate").Position
+	end
+
+	patrolIndex = (patrolIndex % #patrolPoints) + 1
+	return patrolPoints[patrolIndex]
+end
+
+local function catchPlayer(player)
+	local now = os.clock()
+	if now - lastCatchAt < 1.5 then
+		return
+	end
+
+	lastCatchAt = now
+	monsterCaughtPlayer:Fire({
+		Player = player,
+		Source = state,
+	})
+end
+
+local function cleanupMonster()
+	huntActive = false
+	activeHuntId += 1
+	trackedPlayers = {}
+	patrolPoints = {}
+	currentPath = nil
+	pathIndex = 1
+	currentGoal = nil
+	targetPlayer = nil
+	lastKnownPosition = nil
+	lastSearchTarget = nil
+	state = "Idle"
+	safeDestroy(monsterModel)
+	monsterModel = nil
+	monsterHumanoid = nil
+	monsterRoot = nil
+end
+
+local function runAI(huntId)
+	while huntActive and activeHuntId == huntId and monsterModel and monsterHumanoid and monsterRoot do
+		local now = os.clock()
+		local target = pickTarget()
+		if target then
+			targetPlayer = target.Player
+			local character = targetPlayer and targetPlayer.Character
+			local targetRoot = character and character:FindFirstChild("HumanoidRootPart")
+			if targetRoot then
+				local targetPos = targetRoot.Position
+				lastKnownPosition = targetPos
+				monsterHumanoid.WalkSpeed = CHASE_SPEED * getSpeedMultiplier()
+				state = "CHASE"
+				setState("CHASE", {
+					TargetUserId = targetPlayer.UserId,
+					TargetName = targetPlayer.Name,
+					Distance = target.Distance,
+					Intensity = math.clamp(1 - (target.Distance / getVisionRange()), 0, 1),
+					LastKnownPosition = lastKnownPosition,
+					Position = monsterRoot.Position,
+				})
+				if not currentGoal or (currentGoal - targetPos).Magnitude > 6 or now >= nextRepathAt then
+					refreshNavigation(targetPos, false)
+				end
+			else
+				target = nil
+				targetPlayer = nil
+			end
+		else
+			targetPlayer = nil
+			local goal = nil
+			if lastKnownPosition and (monsterRoot.Position - lastKnownPosition).Magnitude > 5 then
+				monsterHumanoid.WalkSpeed = INVESTIGATE_SPEED * getSpeedMultiplier()
+				state = "INVESTIGATE"
+				goal = lastKnownPosition
+			elseif now >= nextRelocateAt then
+				monsterHumanoid.WalkSpeed = PATROL_SPEED * getSpeedMultiplier()
+				state = "SEARCH"
+				goal = choosePatrolTarget()
+				nextRelocateAt = now + math.random(getSearchRelocateMin(), getSearchRelocateMax())
+			else
+				monsterHumanoid.WalkSpeed = PATROL_SPEED * getSpeedMultiplier()
+				state = "PATROL"
+				goal = choosePatrolTarget()
+			end
+
+			if goal and (not currentGoal or (currentGoal - goal).Magnitude > 4 or now >= nextRepathAt) then
+				refreshNavigation(goal, state == "SEARCH")
+			end
+			setState(state, {
+				Distance = nil,
+				Intensity = 0,
+				LastKnownPosition = lastKnownPosition,
+				SearchTarget = lastSearchTarget,
+				Position = monsterRoot.Position,
+			})
+		end
+
+		advanceNavigation()
+
+		if monsterRoot then
+			for _, entry in ipairs(getTrackedPlayerCharacters()) do
+				local distance = (entry.HumanoidRootPart.Position - monsterRoot.Position).Magnitude
+				if distance <= getCatchRange() and entry.Character:GetAttribute("GatewayStatus") == "Alive" and not entry.Character:GetAttribute("GatewayHidden") then
+					catchPlayer(entry.Player)
+				end
+			end
+		end
+
+		if now - lastTelemetryAt >= TELEMETRY_INTERVAL then
+			monsterStateUpdated:Fire({
+				State = state,
+				TargetUserId = targetPlayer and targetPlayer.UserId or nil,
+				TargetName = targetPlayer and targetPlayer.Name or nil,
+				Distance = target and target.Distance or nil,
+				Intensity = target and math.clamp(1 - (target.Distance / getVisionRange()), 0, 1) or 0,
+				SearchTarget = lastSearchTarget,
+				LastKnownPosition = lastKnownPosition,
+				Position = monsterRoot and monsterRoot.Position or nil,
+				ModeId = currentModeId,
+			})
+			lastTelemetryAt = now
+		end
+
+		task.wait(0.2)
+	end
+end
+
+local function startHunt(payload)
+	if huntActive then
+		return
+	end
+
+	currentModeId = type(payload) == "table" and type(payload.ModeId) == "string" and payload.ModeId or GameConfig.DEFAULT_MODE_ID
+	currentModeTuning = type(payload) == "table" and type(payload.ModeTuning) == "table" and payload.ModeTuning or GameConfig.MODE_TUNING[currentModeId] or GameConfig.MODE_TUNING[GameConfig.DEFAULT_MODE_ID]
+
+	local players = {}
+	if type(payload) == "table" and type(payload.Players) == "table" then
+		for _, player in ipairs(payload.Players) do
+			if typeof(player) == "Instance" and player:IsA("Player") then
+				table.insert(players, player)
+			end
+		end
+	end
+
+	if #players == 0 then
+		return
+	end
+
+	trackedPlayers = players
+	patrolPoints = getWaypoints()
+	patrolIndex = 0
+	nextRelocateAt = os.clock() + math.random(getSearchRelocateMin(), getSearchRelocateMax())
+	huntActive = true
+	activeHuntId += 1
+	local huntId = activeHuntId
+	createMonsterModel()
+	setState("PATROL", { SearchTarget = nil, Intensity = 0 })
+	task.spawn(function()
+		runAI(huntId)
+	end)
+end
+
+local function stopHunt(payload)
+	if not huntActive then
+		return
+	end
+
+	if type(payload) == "table" and payload.RoundId then
+		-- no-op placeholder for future multi-round coordination
+	end
+
+	cleanupMonster()
+end
+
+huntStartRequested.Event:Connect(startHunt)
+huntStopRequested.Event:Connect(stopHunt)
+
+if geometryRoot:FindFirstChild("MonsterSpawnPoint") == nil then
+	warn("Gateway to Hell: MonsterSpawnPoint missing; monster will fail to spawn.")
+end
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="12">
+      <Properties>
+        <string name="Name">RoundService</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 
@@ -3213,539 +4151,14 @@ end)
 
 attachExitListener()
 setGateClosed()
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000105">
-  <Properties>
-    <string name="Name">MonsterService</string>
-    <ProtectedString name="Source"><![CDATA[local PathfindingService = game:GetService("PathfindingService")
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Workspace = game:GetService("Workspace")
-
-local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
-
-local signalsFolder = ReplicatedStorage:WaitForChild("GatewayToHellSignals")
-local huntStartRequested = signalsFolder:WaitForChild("HuntStartRequested") :: BindableEvent
-local huntStopRequested = signalsFolder:WaitForChild("HuntStopRequested") :: BindableEvent
-local monsterCaughtPlayer = signalsFolder:WaitForChild("MonsterCaughtPlayer") :: BindableEvent
-local monsterStateUpdated = signalsFolder:WaitForChild("MonsterStateUpdated") :: BindableEvent
-
-local geometryRoot = Workspace:WaitForChild("StoryMapGeometry")
-
-local monsterModel = nil
-local monsterHumanoid = nil
-local monsterRoot = nil
-
-local activeHuntId = 0
-local huntActive = false
-local trackedPlayers = {}
-local patrolPoints = {}
-local patrolIndex = 1
-local state = "Idle"
-local targetPlayer = nil
-local lastKnownPosition = nil
-local currentGoal = nil
-local currentPath = nil
-local pathIndex = 1
-local nextRepathAt = 0
-local nextRelocateAt = 0
-local lastTelemetryAt = 0
-local lastCatchAt = 0
-local lastSearchTarget = nil
-
-local VISION_RANGE = 80
-local HEARING_RANGE = 60
-local CHASE_SPEED = 24
-local PATROL_SPEED = 14
-local INVESTIGATE_SPEED = 18
-local CATCH_RANGE = 5
-local REPATH_INTERVAL = 0.7
-local TELEMETRY_INTERVAL = 0.25
-local SEARCH_RELOCATE_MIN = 120
-local SEARCH_RELOCATE_MAX = 180
-local currentModeTuning = GameConfig.MODE_TUNING[GameConfig.DEFAULT_MODE_ID]
-local currentModeId = GameConfig.DEFAULT_MODE_ID
-
-local function getVisionRange()
-	return currentModeTuning.Monster.VisionRange or VISION_RANGE
-end
-
-local function getHearingRange()
-	return currentModeTuning.Monster.HearingRange or HEARING_RANGE
-end
-
-local function getCatchRange()
-	return currentModeTuning.Monster.CatchRange or CATCH_RANGE
-end
-
-local function getSpeedMultiplier()
-	return currentModeTuning.Monster.SpeedMultiplier or 1
-end
-
-local function getSearchRelocateMin()
-	return currentModeTuning.Monster.SearchRelocateMin or SEARCH_RELOCATE_MIN
-end
-
-local function getSearchRelocateMax()
-	return currentModeTuning.Monster.SearchRelocateMax or SEARCH_RELOCATE_MAX
-end
-
-local function safeDestroy(instance)
-	if instance and instance.Parent then
-		pcall(function()
-			instance:Destroy()
-		end)
-	end
-end
-
-local function makePart(parent, name, size, cframe, color, material, transparency)
-	local part = Instance.new("Part")
-	part.Name = name
-	part.Size = size
-	part.CFrame = cframe
-	part.Color = color
-	part.Material = material
-	part.Transparency = transparency or 0
-	part.Anchored = false
-	part.CanCollide = false
-	part.CanTouch = true
-	part.CanQuery = false
-	part.Massless = true
-	part.Parent = parent
-	return part
-end
-
-local function weldToRoot(part, root)
-	local weld = Instance.new("WeldConstraint")
-	weld.Part0 = part
-	weld.Part1 = root
-	weld.Parent = part
-end
-
-local function createMonsterModel()
-	safeDestroy(monsterModel)
-
-	local model = Instance.new("Model")
-	model.Name = "GuardianOfHell"
-	model.Parent = Workspace
-	local spawnPoint = geometryRoot:WaitForChild("MonsterSpawnPoint") :: BasePart
-
-	local root = makePart(model, "HumanoidRootPart", Vector3.new(2.6, 3.4, 1.9), spawnPoint.CFrame, Color3.fromRGB(18, 12, 16), Enum.Material.Slate, 1)
-	root.RootPriority = 10
-	root.CanCollide = false
-
-	local humanoid = Instance.new("Humanoid")
-	humanoid.Name = "GuardianHumanoid"
-	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-	humanoid.WalkSpeed = PATROL_SPEED
-	humanoid.JumpPower = 40
-	humanoid.HipHeight = 0
-	humanoid.AutoRotate = true
-	humanoid.Parent = model
-
-	local torso = makePart(model, "Torso", Vector3.new(4.2, 5.2, 3.2), root.CFrame * CFrame.new(0, 0.5, 0), Color3.fromRGB(25, 18, 22), Enum.Material.Slate)
-	local head = makePart(model, "Head", Vector3.new(2.8, 2.8, 2.6), root.CFrame * CFrame.new(0, 3.7, 0), Color3.fromRGB(25, 18, 22), Enum.Material.Slate)
-	local armL = makePart(model, "LeftArm", Vector3.new(1.1, 4.2, 1.1), root.CFrame * CFrame.new(-2.8, 0.9, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
-	local armR = makePart(model, "RightArm", Vector3.new(1.1, 4.2, 1.1), root.CFrame * CFrame.new(2.8, 0.9, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
-	local legL = makePart(model, "LeftLeg", Vector3.new(1.2, 4.5, 1.2), root.CFrame * CFrame.new(-1.0, -3.8, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
-	local legR = makePart(model, "RightLeg", Vector3.new(1.2, 4.5, 1.2), root.CFrame * CFrame.new(1.0, -3.8, 0), Color3.fromRGB(22, 16, 20), Enum.Material.Slate)
-	local hornL = makePart(model, "HornL", Vector3.new(0.7, 3.5, 0.7), root.CFrame * CFrame.new(-1.3, 5.0, -0.6) * CFrame.Angles(0, 0, math.rad(-25)), Color3.fromRGB(18, 14, 16), Enum.Material.Slate)
-	local hornR = makePart(model, "HornR", Vector3.new(0.7, 3.5, 0.7), root.CFrame * CFrame.new(1.3, 5.0, -0.6) * CFrame.Angles(0, 0, math.rad(25)), Color3.fromRGB(18, 14, 16), Enum.Material.Slate)
-	local eyeL = makePart(model, "EyeL", Vector3.new(0.24, 0.24, 0.24), root.CFrame * CFrame.new(-0.55, 3.8, -1.2), Color3.fromRGB(255, 52, 20), Enum.Material.Neon)
-	local eyeR = makePart(model, "EyeR", Vector3.new(0.24, 0.24, 0.24), root.CFrame * CFrame.new(0.55, 3.8, -1.2), Color3.fromRGB(255, 52, 20), Enum.Material.Neon)
-	local glow = makePart(model, "Glow", Vector3.new(6, 7, 0.2), root.CFrame * CFrame.new(0, 1.4, -1.0), Color3.fromRGB(255, 82, 35), Enum.Material.Neon, 0.65)
-
-	for _, part in ipairs({ torso, head, armL, armR, legL, legR, hornL, hornR, eyeL, eyeR, glow }) do
-		weldToRoot(part, root)
-	end
-
-	local light = Instance.new("PointLight")
-	light.Color = Color3.fromRGB(255, 78, 36)
-	light.Range = 18
-	light.Brightness = 1.5
-	light.Shadows = true
-	light.Parent = glow
-
-	model.PrimaryPart = root
-	model:PivotTo(spawnPoint.CFrame)
-
-	monsterModel = model
-	monsterHumanoid = humanoid
-	monsterRoot = root
-	return model, humanoid, root
-end
-
-local function getWaypoints()
-	local folder = geometryRoot:FindFirstChild("MonsterWaypoints")
-	local items = {}
-
-	if folder then
-		for _, child in ipairs(folder:GetChildren()) do
-			if child:IsA("BasePart") then
-				table.insert(items, child)
-			end
-		end
-		table.sort(items, function(a, b)
-			return a.Name < b.Name
-		end)
-	end
-
-	local positions = {}
-	for _, part in ipairs(items) do
-		table.insert(positions, part.Position)
-	end
-
-	if #positions == 0 then
-		positions = {
-			geometryRoot:FindFirstChild("MonsterSpawnPoint").Position,
-			geometryRoot:FindFirstChild("StoryEntranceSpawn").Position,
-			geometryRoot:FindFirstChild("StoryExitGate").Position,
-		}
-	end
-
-	return positions
-end
-
-local function setState(newState, payload)
-	state = newState
-	monsterStateUpdated:Fire({
-		State = state,
-		TargetUserId = payload and payload.TargetUserId or nil,
-		TargetName = payload and payload.TargetName or nil,
-		Distance = payload and payload.Distance or nil,
-		Intensity = payload and payload.Intensity or 0,
-		SearchTarget = payload and payload.SearchTarget or nil,
-		LastKnownPosition = payload and payload.LastKnownPosition or nil,
-		Position = payload and payload.Position or nil,
-		ModeId = payload and payload.ModeId or currentModeId,
-	})
-end
-
-local function getTrackedPlayerCharacters()
-	local results = {}
-	for _, player in ipairs(trackedPlayers) do
-		if player.Parent == Players then
-			local character = player.Character
-			local hrp = character and character:FindFirstChild("HumanoidRootPart")
-			local hum = character and character:FindFirstChildOfClass("Humanoid")
-			local status = character and character:GetAttribute("GatewayStatus")
-			local hidden = character and character:GetAttribute("GatewayHidden")
-			if character and hrp and hum and status == "Alive" and not hidden then
-				table.insert(results, { Player = player, Character = character, HumanoidRootPart = hrp, Humanoid = hum })
-			end
-		end
-	end
-	return results
-end
-
-local function hasLineOfSight(targetCharacter)
-	if not monsterRoot then
-		return false
-	end
-
-	local targetRoot = targetCharacter.HumanoidRootPart
-	local direction = targetRoot.Position - monsterRoot.Position
-	if direction.Magnitude <= 0 then
-		return true
-	end
-
-	local coneDot = monsterRoot.CFrame.LookVector:Dot(direction.Unit)
-	if coneDot < 0.15 then
-		return false
-	end
-
-	local params = RaycastParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.FilterDescendantsInstances = { monsterModel }
-	params.IgnoreWater = true
-
-	local hit = Workspace:Raycast(monsterRoot.Position + Vector3.new(0, 2, 0), direction, params)
-	if not hit then
-		return true
-	end
-
-	return hit.Instance:IsDescendantOf(targetCharacter.Character)
-end
-
-local function pickTarget()
-	local candidates = getTrackedPlayerCharacters()
-	local best = nil
-	local bestScore = math.huge
-
-	for _, entry in ipairs(candidates) do
-		local distance = (entry.HumanoidRootPart.Position - monsterRoot.Position).Magnitude
-		if distance <= getVisionRange() then
-			local visible = hasLineOfSight(entry)
-			local speed = entry.HumanoidRootPart.AssemblyLinearVelocity.Magnitude
-			local loud = speed >= 10 or entry.Humanoid.WalkSpeed >= 18
-			if visible then
-				local score = distance - math.clamp(speed, 0, 20) * 0.5
-				if score < bestScore then
-					best = { Player = entry.Player, Distance = distance, Visible = true }
-					bestScore = score
-				end
-			elseif distance <= getHearingRange() and loud then
-				local score = distance + 15
-				if score < bestScore then
-					best = { Player = entry.Player, Distance = distance, Visible = false }
-					bestScore = score
-				end
-			end
-		end
-	end
-
-	return best
-end
-
-local function planPath(goalPosition)
-	if not monsterHumanoid or not monsterRoot then
-		return {}
-	end
-
-	local path = PathfindingService:CreatePath({
-		AgentRadius = 2,
-		AgentHeight = 7,
-		AgentCanJump = true,
-		AgentCanClimb = true,
-	})
-
-	local waypoints = {}
-	local ok = pcall(function()
-		path:ComputeAsync(monsterRoot.Position, goalPosition)
-	end)
-
-	if ok and path.Status == Enum.PathStatus.Success then
-		waypoints = path:GetWaypoints()
-	else
-		waypoints = { { Position = goalPosition, Action = Enum.PathWaypointAction.Walk } }
-	end
-
-	return waypoints
-end
-
-local function refreshNavigation(goalPosition, useSearchTarget)
-	currentGoal = goalPosition
-	currentPath = planPath(goalPosition)
-	pathIndex = 1
-	nextRepathAt = os.clock() + REPATH_INTERVAL
-	if useSearchTarget then
-		lastSearchTarget = goalPosition
-	end
-end
-
-local function advanceNavigation()
-	if not monsterHumanoid or not monsterRoot or not currentPath then
-		return
-	end
-
-	local waypoint = currentPath[pathIndex]
-	if not waypoint then
-		return
-	end
-
-	local destination = waypoint.Position
-	if (monsterRoot.Position - destination).Magnitude <= 4 then
-		pathIndex += 1
-		return
-	end
-
-	if waypoint.Action == Enum.PathWaypointAction.Jump then
-		monsterHumanoid.Jump = true
-	end
-
-	monsterHumanoid:MoveTo(destination)
-end
-
-local function choosePatrolTarget()
-	if #patrolPoints == 0 then
-		return geometryRoot:FindFirstChild("StoryExitGate").Position
-	end
-
-	patrolIndex = (patrolIndex % #patrolPoints) + 1
-	return patrolPoints[patrolIndex]
-end
-
-local function catchPlayer(player)
-	local now = os.clock()
-	if now - lastCatchAt < 1.5 then
-		return
-	end
-
-	lastCatchAt = now
-	monsterCaughtPlayer:Fire({
-		Player = player,
-		Source = state,
-	})
-end
-
-local function cleanupMonster()
-	huntActive = false
-	activeHuntId += 1
-	trackedPlayers = {}
-	patrolPoints = {}
-	currentPath = nil
-	pathIndex = 1
-	currentGoal = nil
-	targetPlayer = nil
-	lastKnownPosition = nil
-	lastSearchTarget = nil
-	state = "Idle"
-	safeDestroy(monsterModel)
-	monsterModel = nil
-	monsterHumanoid = nil
-	monsterRoot = nil
-end
-
-local function runAI(huntId)
-	while huntActive and activeHuntId == huntId and monsterModel and monsterHumanoid and monsterRoot do
-		local now = os.clock()
-		local target = pickTarget()
-		if target then
-			targetPlayer = target.Player
-			local character = targetPlayer and targetPlayer.Character
-			local targetRoot = character and character:FindFirstChild("HumanoidRootPart")
-			if targetRoot then
-				local targetPos = targetRoot.Position
-				lastKnownPosition = targetPos
-				monsterHumanoid.WalkSpeed = CHASE_SPEED * getSpeedMultiplier()
-				state = "CHASE"
-				setState("CHASE", {
-					TargetUserId = targetPlayer.UserId,
-					TargetName = targetPlayer.Name,
-					Distance = target.Distance,
-					Intensity = math.clamp(1 - (target.Distance / getVisionRange()), 0, 1),
-					LastKnownPosition = lastKnownPosition,
-					Position = monsterRoot.Position,
-				})
-				if not currentGoal or (currentGoal - targetPos).Magnitude > 6 or now >= nextRepathAt then
-					refreshNavigation(targetPos, false)
-				end
-			else
-				target = nil
-				targetPlayer = nil
-			end
-		else
-			targetPlayer = nil
-			local goal = nil
-			if lastKnownPosition and (monsterRoot.Position - lastKnownPosition).Magnitude > 5 then
-				monsterHumanoid.WalkSpeed = INVESTIGATE_SPEED * getSpeedMultiplier()
-				state = "INVESTIGATE"
-				goal = lastKnownPosition
-			elseif now >= nextRelocateAt then
-				monsterHumanoid.WalkSpeed = PATROL_SPEED * getSpeedMultiplier()
-				state = "SEARCH"
-				goal = choosePatrolTarget()
-				nextRelocateAt = now + math.random(getSearchRelocateMin(), getSearchRelocateMax())
-			else
-				monsterHumanoid.WalkSpeed = PATROL_SPEED * getSpeedMultiplier()
-				state = "PATROL"
-				goal = choosePatrolTarget()
-			end
-
-			if goal and (not currentGoal or (currentGoal - goal).Magnitude > 4 or now >= nextRepathAt) then
-				refreshNavigation(goal, state == "SEARCH")
-			end
-			setState(state, {
-				Distance = nil,
-				Intensity = 0,
-				LastKnownPosition = lastKnownPosition,
-				SearchTarget = lastSearchTarget,
-				Position = monsterRoot.Position,
-			})
-		end
-
-		advanceNavigation()
-
-		if monsterRoot then
-			for _, entry in ipairs(getTrackedPlayerCharacters()) do
-				local distance = (entry.HumanoidRootPart.Position - monsterRoot.Position).Magnitude
-				if distance <= getCatchRange() and entry.Character:GetAttribute("GatewayStatus") == "Alive" and not entry.Character:GetAttribute("GatewayHidden") then
-					catchPlayer(entry.Player)
-				end
-			end
-		end
-
-		if now - lastTelemetryAt >= TELEMETRY_INTERVAL then
-			monsterStateUpdated:Fire({
-				State = state,
-				TargetUserId = targetPlayer and targetPlayer.UserId or nil,
-				TargetName = targetPlayer and targetPlayer.Name or nil,
-				Distance = target and target.Distance or nil,
-				Intensity = target and math.clamp(1 - (target.Distance / getVisionRange()), 0, 1) or 0,
-				SearchTarget = lastSearchTarget,
-				LastKnownPosition = lastKnownPosition,
-				Position = monsterRoot and monsterRoot.Position or nil,
-				ModeId = currentModeId,
-			})
-			lastTelemetryAt = now
-		end
-
-		task.wait(0.2)
-	end
-end
-
-local function startHunt(payload)
-	if huntActive then
-		return
-	end
-
-	currentModeId = type(payload) == "table" and type(payload.ModeId) == "string" and payload.ModeId or GameConfig.DEFAULT_MODE_ID
-	currentModeTuning = type(payload) == "table" and type(payload.ModeTuning) == "table" and payload.ModeTuning or GameConfig.MODE_TUNING[currentModeId] or GameConfig.MODE_TUNING[GameConfig.DEFAULT_MODE_ID]
-
-	local players = {}
-	if type(payload) == "table" and type(payload.Players) == "table" then
-		for _, player in ipairs(payload.Players) do
-			if typeof(player) == "Instance" and player:IsA("Player") then
-				table.insert(players, player)
-			end
-		end
-	end
-
-	if #players == 0 then
-		return
-	end
-
-	trackedPlayers = players
-	patrolPoints = getWaypoints()
-	patrolIndex = 0
-	nextRelocateAt = os.clock() + math.random(getSearchRelocateMin(), getSearchRelocateMax())
-	huntActive = true
-	activeHuntId += 1
-	local huntId = activeHuntId
-	createMonsterModel()
-	setState("PATROL", { SearchTarget = nil, Intensity = 0 })
-	task.spawn(function()
-		runAI(huntId)
-	end)
-end
-
-local function stopHunt(payload)
-	if not huntActive then
-		return
-	end
-
-	if type(payload) == "table" and payload.RoundId then
-		-- no-op placeholder for future multi-round coordination
-	end
-
-	cleanupMonster()
-end
-
-huntStartRequested.Event:Connect(startHunt)
-huntStopRequested.Event:Connect(stopHunt)
-
-if geometryRoot:FindFirstChild("MonsterSpawnPoint") == nil then
-	warn("Gateway to Hell: MonsterSpawnPoint missing; monster will fail to spawn.")
-end
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="Script" referent="RBX00000106">
-  <Properties>
-    <string name="Name">StoryMapBuilder</string>
-    <ProtectedString name="Source"><![CDATA[local ReplicatedStorage = game:GetService("ReplicatedStorage")
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="Script" referent="13">
+      <Properties>
+        <string name="Name">StoryMapBuilder</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 
 local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
@@ -4648,362 +5061,24 @@ local function buildMap()
 end
 
 buildMap()
-]]></ProtectedString>
-  </Properties>
-</Item>
-</Item>
-<Item class="ReplicatedStorage" referent="RBX00000002">
-  <Properties>
-    <string name="Name">ReplicatedStorage</string>
-  </Properties>
-<Item class="ModuleScript" referent="RBX00000107">
-  <Properties>
-    <string name="Name">GameConfig</string>
-    <ProtectedString name="Source"><![CDATA[local GameConfig = {}
-
-GameConfig.GameTitleAr = "بوابة الجحيم"
-GameConfig.GameTitleEn = "Gateway to Hell"
-GameConfig.TaglineAr = "تعاون، اكشف الأسرار، واهرب قبل أن تُغلق البوابة."
-GameConfig.COUNTDOWN_SECONDS = 5
-GameConfig.PLAYER_COUNT_OPTIONS = { 2, 4, 6 }
-GameConfig.DEFAULT_MODE_ID = "Story"
-GameConfig.STORY_REGION_ORIGIN = Vector3.new(2000, 0, 0)
-GameConfig.STORY_KEY_COUNT = 5
-GameConfig.SECRET_OBJECTIVE_ID = "PortalSecret"
-GameConfig.MODE_TIME_LIMITS = {
-    Story = 900,
-    Nightmare = 780,
-    Hardcore = 660,
-    Endless = 1200,
-}
-
-GameConfig.MODE_TUNING = {
-    Story = {
-        Monster = {
-            SpeedMultiplier = 1,
-            VisionRange = 80,
-            HearingRange = 60,
-            CatchRange = 5,
-            SearchRelocateMin = 120,
-            SearchRelocateMax = 180,
-        },
-        Hiding = {
-            DwellMin = 45,
-            DwellMax = 90,
-        },
-        Flashlight = {
-            BatteryDrainPerSecond = 1.8,
-            BatteryPickupAmount = 35,
-        },
-        Sanity = {
-            DarkDrainPerSecond = 1.0,
-            MonsterDrainPerSecond = 2.5,
-            RecoveryPerSecond = 1.4,
-            HiddenDrainPerSecond = 0.2,
-            LowThreshold = 30,
-        },
-        Gameplay = {
-            AllowRevive = true,
-            EndlessPressure = false,
-        },
-    },
-    Nightmare = {
-        Monster = {
-            SpeedMultiplier = 1.25,
-            VisionRange = 95,
-            HearingRange = 75,
-            CatchRange = 5.5,
-            SearchRelocateMin = 90,
-            SearchRelocateMax = 135,
-        },
-        Hiding = {
-            DwellMin = 35,
-            DwellMax = 70,
-        },
-        Flashlight = {
-            BatteryDrainPerSecond = 2.2,
-            BatteryPickupAmount = 30,
-        },
-        Sanity = {
-            DarkDrainPerSecond = 1.4,
-            MonsterDrainPerSecond = 3.3,
-            RecoveryPerSecond = 1.0,
-            HiddenDrainPerSecond = 0.3,
-            LowThreshold = 35,
-        },
-        Gameplay = {
-            AllowRevive = true,
-            EndlessPressure = false,
-        },
-    },
-    Hardcore = {
-        Monster = {
-            SpeedMultiplier = 1.15,
-            VisionRange = 90,
-            HearingRange = 72,
-            CatchRange = 5.75,
-            SearchRelocateMin = 75,
-            SearchRelocateMax = 120,
-        },
-        Hiding = {
-            DwellMin = 30,
-            DwellMax = 60,
-        },
-        Flashlight = {
-            BatteryDrainPerSecond = 2.5,
-            BatteryPickupAmount = 25,
-        },
-        Sanity = {
-            DarkDrainPerSecond = 1.5,
-            MonsterDrainPerSecond = 3.8,
-            RecoveryPerSecond = 0.8,
-            HiddenDrainPerSecond = 0.35,
-            LowThreshold = 35,
-        },
-        Gameplay = {
-            AllowRevive = false,
-            EndlessPressure = false,
-        },
-    },
-    Endless = {
-        Monster = {
-            SpeedMultiplier = 1.08,
-            VisionRange = 88,
-            HearingRange = 70,
-            CatchRange = 5.5,
-            SearchRelocateMin = 60,
-            SearchRelocateMax = 95,
-        },
-        Hiding = {
-            DwellMin = 25,
-            DwellMax = 50,
-        },
-        Flashlight = {
-            BatteryDrainPerSecond = 2.0,
-            BatteryPickupAmount = 40,
-        },
-        Sanity = {
-            DarkDrainPerSecond = 1.2,
-            MonsterDrainPerSecond = 2.9,
-            RecoveryPerSecond = 1.2,
-            HiddenDrainPerSecond = 0.25,
-            LowThreshold = 30,
-        },
-        Gameplay = {
-            AllowRevive = true,
-            EndlessPressure = true,
-            EndlessPulseSeconds = 90,
-        },
-    },
-}
-
-GameConfig.GAME_MODES = {
-    {
-        Id = "Story",
-        NameAr = "القصة",
-        NameEn = "Story",
-        DescriptionAr = "تقدم تعاوني متدرج مع ألغاز وأحداث رعب مركزة.",
-    },
-    {
-        Id = "Nightmare",
-        NameAr = "الكابوس",
-        NameEn = "Nightmare",
-        DescriptionAr = "أعداء أكثر شراسة، ضباب أثقل، ومخاطر أعلى على الفريق.",
-    },
-    {
-        Id = "Hardcore",
-        NameAr = "القاسي",
-        NameEn = "Hardcore",
-        DescriptionAr = "لا رحمة تقريبًا: موارد محدودة وأخطاء أقل مسموحة.",
-    },
-    {
-        Id = "Endless",
-        NameAr = "اللانهاية",
-        NameEn = "Endless",
-        DescriptionAr = "أطول صمود ممكن مع تصاعد تدريجي في التهديدات.",
-    },
-}
-
-GameConfig.COLORS = {
-    Background = Color3.fromRGB(12, 8, 18),
-    Panel = Color3.fromRGB(24, 14, 22),
-    PanelSoft = Color3.fromRGB(34, 18, 28),
-    Accent = Color3.fromRGB(210, 74, 38),
-    AccentAlt = Color3.fromRGB(255, 140, 77),
-    AccentDim = Color3.fromRGB(115, 34, 28),
-    Text = Color3.fromRGB(244, 236, 242),
-    TextMuted = Color3.fromRGB(187, 173, 183),
-    Danger = Color3.fromRGB(182, 48, 36),
-}
-
-GameConfig.SURVIVAL_TIPS = {
-    "ابقَ قريبًا من الفريق؛ الظلام يفرّق من يبقى وحيدًا.",
-    "استمع للأصوات المنخفضة قبل أن تدخل أي ممر جديد.",
-    "لا تجري في خطوط مستقيمة عند سماع فلاشات الرعب.",
-    "تبادل الإضاءة والمراقبة بين اللاعبين لتقليل المفاجآت.",
-    "إذا تغيّر الضوء فجأة، توقّف واستمع لثانيتين.",
-}
-
-GameConfig.MONSTER_LORE = {
-    "الكيان الأصلي لا يظهر كاملًا؛ الباقي يتركه الخوف للخيال.",
-    "أبواب الحديد القديمة لا تفتح باليد، بل بالهمس والندم.",
-    "كل خطوة في القبو القديمة ترد عليك بصدى ليس لك.",
-    "النجاة ليست أن تهرب أسرع؛ النجاة أن تعرف متى لا تنظر.",
-}
-
-GameConfig.CHANGELOG = {
-    "v0.1 — تجهيز اللوبّي، شاشة التحميل، والقائمة الرئيسية.",
-    "v0.1 — نظام المطابقة 2/4/6 مع عدّاد دخول أولي.",
-    "v0.1 — لوحة أفضل اللاعبين وتهيئة بيانات الحفظ.",
-}
-
-GameConfig.PLACEHOLDER_ASSET_IDS = {
-    LobbyMesh = 0,
-    MenuBackdrop = 0,
-    MonsterSilhouette = 0,
-    LobbyMusic = 0,
-    WindLoop = 0,
-}
-
-GameConfig.PLACEHOLDER_SOUND_IDS = {
-    ChaseMusic = 0,
-    Heartbeat = 0,
-    DownedLoop = 0,
-    MonsterStinger = 0,
-    Whispers = 0,
-}
-
-GameConfig.PLACEHOLDER_BADGE_IDS = {
-    FirstEscape = 0,
-    NoDeathsEscape = 0,
-    NightmareClear = 0,
-    HardcoreClear = 0,
-    SecretEnding = 0,
-}
-
-GameConfig.ENDING_LINES = {
-    Good = {
-        TitleAr = "نهاية النجاة",
-        LineAr = "أبواب الجحيم تنحني أمام الناجين، لكن صدى الخطوات ما زال خلفهم.",
-    },
-    Bad = {
-        TitleAr = "النهاية المظلمة",
-        LineAr = "لم يبقَ سوى الصمت… والجدران تردد أسماء من غابوا.",
-    },
-    Secret = {
-        TitleAr = "النهاية السرية",
-        LineAr = "تكشف البوابة سرها لمن يجرؤ على لمس الطقس المظلم ثم يهرب حيًا.",
-    },
-}
-
-GameConfig.UPDATE_SECTIONS = {
-    {
-        TitleAr = "المحتوى الجديد",
-        Items = {
-            "ألغاز القبو الخمسة أصبحت كاملة وتفتح البوابة بعد حلها.",
-            "حارس الجحيم يطاردك بعد انتهاء الوقت مع حالات منطرح/إنعاش.",
-            "نظام الاختباء والمصباح والبطاريات يضيف طبقة بقاء متواصلة.",
-        },
-    },
-    {
-        TitleAr = "المواقع",
-        Items = {
-            "القصر الرئيسي في اللوبي مع البوابة الحجرية والمركز الملعون.",
-            "منطقة القبو البعيدة مع ممرات الغموض والغرفة السرية.",
-        },
-    },
-    {
-        TitleAr = "الصوت والإضاءة",
-        Items = {
-            "طبقات مطاردة جديدة، أنين منخفض، وتأثيرات صفاء/تشوش حسب الحالة.",
-            "توازن ضوء المصباح مع بطاريات قابلة للتجديد وتأثيرات سمعية خفيفة.",
-        },
-    },
-}
-
-GameConfig.LOADING_MESSAGES = {
-    Title = "جارٍ فتح البوابة...",
-    Subtitle = "تهيئة عناصر الرعب التعاوني وتحميل القاعة الرئيسية.",
-}
-
-function GameConfig.getModeById(modeId: string)
-    for _, mode in ipairs(GameConfig.GAME_MODES) do
-        if mode.Id == modeId then
-            return mode
-        end
-    end
-
-    return nil
-end
-
-return GameConfig
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="ModuleScript" referent="RBX00000108">
-  <Properties>
-    <string name="Name">StoryPuzzles</string>
-    <ProtectedString name="Source"><![CDATA[local StoryPuzzles = {}
-
-StoryPuzzles.OrderedIds = { "Keys", "Symbols", "Statues", "Candles", "Sounds" }
-
-StoryPuzzles.Definitions = {
-    Keys = {
-        Id = "Keys",
-        Label = "المفاتيح",
-        Total = 5,
-    },
-    Symbols = {
-        Id = "Symbols",
-        Label = "لغز الرموز",
-        Total = 4,
-        Sequence = { "1", "3", "2", "4" },
-    },
-    Statues = {
-        Id = "Statues",
-        Label = "لغز التماثيل",
-        Total = 3,
-        Targets = { 90, 180, 270 },
-    },
-    Candles = {
-        Id = "Candles",
-        Label = "لغز الشموع",
-        Total = 4,
-        Sequence = { 3, 1, 4, 2 },
-    },
-    Sounds = {
-        Id = "Sounds",
-        Label = "لغز الأصوات",
-        Total = 3,
-        Sequence = { 1, 3, 2 },
-    },
-}
-
-function StoryPuzzles.getOrderedDefinitions()
-    local list = {}
-    for _, id in ipairs(StoryPuzzles.OrderedIds) do
-        table.insert(list, StoryPuzzles.Definitions[id])
-    end
-    return list
-end
-
-function StoryPuzzles.getDefinition(puzzleId: string)
-    return StoryPuzzles.Definitions[puzzleId]
-end
-
-return StoryPuzzles
-]]></ProtectedString>
-  </Properties>
-</Item>
-</Item>
-<Item class="StarterGui" referent="RBX00000003">
-  <Properties>
-    <string name="Name">StarterGui</string>
-  </Properties>
-<Item class="LocalScript" referent="RBX00000109">
-  <Properties>
-    <string name="Name">LoadingScreen</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="SoundService" referent="14">
+    <Properties>
+      <string name="Name">SoundService</string>
+      <bool name="RespectFilteringEnabled">true</bool>
+    </Properties>
+  </Item>
+  <Item class="StarterGui" referent="15">
+    <Properties>
+      <string name="Name">StarterGui</string>
+    </Properties>
+    <Item class="LocalScript" referent="16">
+      <Properties>
+        <string name="Name">LoadingScreen</string>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local StarterGui = game:GetService("StarterGui")
@@ -5227,13 +5302,13 @@ task.spawn(function()
         task.wait(2.2)
     end
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000110">
-  <Properties>
-    <string name="Name">MainMenu</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="LocalScript" referent="17">
+      <Properties>
+        <string name="Name">MainMenu</string>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 
@@ -5366,8 +5441,11 @@ local activePanel = nil
 
 local function setContent(lines, header)
     contentTitle.Text = header
-    contentBody:ClearAllChildren()
-    bodyLayout.Parent = contentBody
+    for _, child in ipairs(contentBody:GetChildren()) do
+        if not child:IsA("UIListLayout") then
+            child:Destroy()
+        end
+    end
 
     for _, line in ipairs(lines) do
         local label = Instance.new("TextLabel")
@@ -5443,13 +5521,13 @@ end)
 updatesButton.MouseButton1Click:Connect(function()
     togglePanel("updates")
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000111">
-  <Properties>
-    <string name="Name">RoundHUD</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+    <Item class="LocalScript" referent="18">
+      <Properties>
+        <string name="Name">RoundHUD</string>
+        <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -5473,21 +5551,33 @@ screenGui.Parent = playerGui
 
 local chaseMusic = Instance.new("Sound")
 chaseMusic.Name = "ChaseMusic"
-chaseMusic.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic > 0 then
+	chaseMusic.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.ChaseMusic}`
+else
+	chaseMusic.SoundId = ""
+end
 chaseMusic.Looped = true
 chaseMusic.Volume = 0
 chaseMusic.Parent = SoundService
 
 local heartbeat = Instance.new("Sound")
 heartbeat.Name = "HeartbeatLoop"
-heartbeat.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat > 0 then
+	heartbeat.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Heartbeat}`
+else
+	heartbeat.SoundId = ""
+end
 heartbeat.Looped = true
 heartbeat.Volume = 0
 heartbeat.Parent = SoundService
 
 local downedLoop = Instance.new("Sound")
 downedLoop.Name = "DownedLoop"
-downedLoop.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop > 0 then
+	downedLoop.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.DownedLoop}`
+else
+	downedLoop.SoundId = ""
+end
 downedLoop.Looped = true
 downedLoop.Volume = 0
 
@@ -5929,22 +6019,133 @@ RunService.RenderStepped:Connect(function()
 		applyAudioAndShake()
 	end
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-</Item>
-<Item class="StarterPlayer" referent="RBX00000004">
-  <Properties>
-    <string name="Name">StarterPlayer</string>
-  </Properties>
-<Item class="StarterPlayerScripts" referent="RBX00000010">
-  <Properties>
-    <string name="Name">StarterPlayerScripts</string>
-  </Properties>
-<Item class="LocalScript" referent="RBX00000112">
-  <Properties>
-    <string name="Name">LobbyAmbience</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="StarterPlayer" referent="19">
+    <Properties>
+      <string name="Name">StarterPlayer</string>
+    </Properties>
+    <Item class="StarterPlayerScripts" referent="20">
+      <Properties>
+        <string name="Name">StarterPlayerScripts</string>
+      </Properties>
+      <Item class="LocalScript" referent="21">
+        <Properties>
+          <string name="Name">AchievementsToast</string>
+          <string name="Source"><![CDATA[local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+
+local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local achievementUnlockedEvent = ReplicatedStorage:WaitForChild("GatewayToHellRemotes"):WaitForChild("AchievementUnlocked")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AchievementsToastGui"
+screenGui.IgnoreGuiInset = true
+screenGui.ResetOnSpawn = false
+screenGui.DisplayOrder = 90
+screenGui.Parent = playerGui
+
+local stack = Instance.new("Frame")
+stack.AnchorPoint = Vector2.new(1, 1)
+stack.Position = UDim2.new(0.98, 0, 0.96, 0)
+stack.Size = UDim2.new(0.28, 0, 0.30, 0)
+stack.BackgroundTransparency = 1
+stack.Parent = screenGui
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 8)
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Parent = stack
+
+local function makeToast(titleText, bodyText)
+	local toast = Instance.new("Frame")
+	toast.BackgroundColor3 = GameConfig.COLORS.Panel
+	toast.BackgroundTransparency = 0.04
+	toast.BorderSizePixel = 0
+	toast.Size = UDim2.new(1, 0, 0, 64)
+	toast.Parent = stack
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 10)
+	corner.Parent = toast
+
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = GameConfig.COLORS.AccentAlt
+	stroke.Transparency = 0.22
+	stroke.Parent = toast
+
+	local title = Instance.new("TextLabel")
+	title.BackgroundTransparency = 1
+	title.Position = UDim2.new(0.06, 0, 0.10, 0)
+	title.Size = UDim2.new(0.88, 0, 0.32, 0)
+	title.Font = Enum.Font.GothamBlack
+	title.TextColor3 = GameConfig.COLORS.AccentAlt
+	title.TextScaled = true
+	title.TextXAlignment = Enum.TextXAlignment.Left
+	title.Text = titleText
+	title.Parent = toast
+
+	local body = Instance.new("TextLabel")
+	body.BackgroundTransparency = 1
+	body.Position = UDim2.new(0.06, 0, 0.44, 0)
+	body.Size = UDim2.new(0.88, 0, 0.38, 0)
+	body.Font = Enum.Font.GothamMedium
+	body.TextColor3 = GameConfig.COLORS.Text
+	body.TextScaled = true
+	body.TextWrapped = true
+	body.TextXAlignment = Enum.TextXAlignment.Left
+	body.Text = bodyText
+	body.Parent = toast
+
+	toast.BackgroundTransparency = 1
+	stroke.Transparency = 1
+	TweenService:Create(toast, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		BackgroundTransparency = 0.04,
+	}):Play()
+	TweenService:Create(stroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Transparency = 0.22,
+	}):Play()
+
+	task.delay(3.5, function()
+		if toast.Parent then
+			TweenService:Create(toast, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+				BackgroundTransparency = 1,
+			}):Play()
+			TweenService:Create(stroke, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+				Transparency = 1,
+			}):Play()
+			task.delay(0.28, function()
+				if toast.Parent then
+					toast:Destroy()
+				end
+			end)
+		end
+	end)
+end
+
+achievementUnlockedEvent.OnClientEvent:Connect(function(payload)
+	if type(payload) ~= "table" then
+		return
+	end
+
+	makeToast(payload.TitleAr or "إنجاز جديد", payload.DescriptionAr or "تم فتح إنجاز جديد.")
+end)
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="LocalScript" referent="22">
+        <Properties>
+          <string name="Name">LobbyAmbience</string>
+          <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -6008,13 +6209,13 @@ if player.Character then
 end
 
 player.CharacterAdded:Connect(bindCharacter)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000113">
-  <Properties>
-    <string name="Name">MatchmakingClient</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="LocalScript" referent="23">
+        <Properties>
+          <string name="Name">MatchmakingClient</string>
+          <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 
@@ -6258,13 +6459,13 @@ teleportEvent.OnClientEvent:Connect(function()
 		countdownOverlay.Visible = false
 	end)
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000114">
-  <Properties>
-    <string name="Name">PlayerEffects</string>
-    <ProtectedString name="Source"><![CDATA[local ContextActionService = game:GetService("ContextActionService")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="LocalScript" referent="24">
+        <Properties>
+          <string name="Name">PlayerEffects</string>
+          <string name="Source"><![CDATA[local ContextActionService = game:GetService("ContextActionService")
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -6362,7 +6563,11 @@ blur.Parent = Lighting
 
 local whispers = Instance.new("Sound")
 whispers.Name = "SanityWhispers"
-whispers.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Whispers}`
+if GameConfig.PLACEHOLDER_SOUND_IDS.Whispers > 0 then
+	whispers.SoundId = `rbxassetid://{GameConfig.PLACEHOLDER_SOUND_IDS.Whispers}`
+else
+	whispers.SoundId = ""
+end
 whispers.Looped = true
 whispers.Volume = 0
 whispers.Parent = screenGui
@@ -6465,124 +6670,13 @@ RunService.RenderStepped:Connect(function()
 		applySanityEffects(currentState.SelfState)
 	end
 end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000115">
-  <Properties>
-    <string name="Name">AchievementsToast</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
-
-local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
-
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
-local achievementUnlockedEvent = ReplicatedStorage:WaitForChild("GatewayToHellRemotes"):WaitForChild("AchievementUnlocked")
-
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "AchievementsToastGui"
-screenGui.IgnoreGuiInset = true
-screenGui.ResetOnSpawn = false
-screenGui.DisplayOrder = 90
-screenGui.Parent = playerGui
-
-local stack = Instance.new("Frame")
-stack.AnchorPoint = Vector2.new(1, 1)
-stack.Position = UDim2.new(0.98, 0, 0.96, 0)
-stack.Size = UDim2.new(0.28, 0, 0.30, 0)
-stack.BackgroundTransparency = 1
-stack.Parent = screenGui
-
-local layout = Instance.new("UIListLayout")
-layout.Padding = UDim.new(0, 8)
-layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-layout.SortOrder = Enum.SortOrder.LayoutOrder
-layout.Parent = stack
-
-local function makeToast(titleText, bodyText)
-	local toast = Instance.new("Frame")
-	toast.BackgroundColor3 = GameConfig.COLORS.Panel
-	toast.BackgroundTransparency = 0.04
-	toast.BorderSizePixel = 0
-	toast.Size = UDim2.new(1, 0, 0, 64)
-	toast.Parent = stack
-
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0, 10)
-	corner.Parent = toast
-
-	local stroke = Instance.new("UIStroke")
-	stroke.Color = GameConfig.COLORS.AccentAlt
-	stroke.Transparency = 0.22
-	stroke.Parent = toast
-
-	local title = Instance.new("TextLabel")
-	title.BackgroundTransparency = 1
-	title.Position = UDim2.new(0.06, 0, 0.10, 0)
-	title.Size = UDim2.new(0.88, 0, 0.32, 0)
-	title.Font = Enum.Font.GothamBlack
-	title.TextColor3 = GameConfig.COLORS.AccentAlt
-	title.TextScaled = true
-	title.TextXAlignment = Enum.TextXAlignment.Left
-	title.Text = titleText
-	title.Parent = toast
-
-	local body = Instance.new("TextLabel")
-	body.BackgroundTransparency = 1
-	body.Position = UDim2.new(0.06, 0, 0.44, 0)
-	body.Size = UDim2.new(0.88, 0, 0.38, 0)
-	body.Font = Enum.Font.GothamMedium
-	body.TextColor3 = GameConfig.COLORS.Text
-	body.TextScaled = true
-	body.TextWrapped = true
-	body.TextXAlignment = Enum.TextXAlignment.Left
-	body.Text = bodyText
-	body.Parent = toast
-
-	toast.BackgroundTransparency = 1
-	stroke.Transparency = 1
-	TweenService:Create(toast, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-		BackgroundTransparency = 0.04,
-	}):Play()
-	TweenService:Create(stroke, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-		Transparency = 0.22,
-	}):Play()
-
-	task.delay(3.5, function()
-		if toast.Parent then
-			TweenService:Create(toast, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				BackgroundTransparency = 1,
-			}):Play()
-			TweenService:Create(stroke, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				Transparency = 1,
-			}):Play()
-			task.delay(0.28, function()
-				if toast.Parent then
-					toast:Destroy()
-				end
-			end)
-		end
-	end)
-end
-
-achievementUnlockedEvent.OnClientEvent:Connect(function(payload)
-	if type(payload) ~= "table" then
-		return
-	end
-
-	makeToast(payload.TitleAr or "إنجاز جديد", payload.DescriptionAr or "تم فتح إنجاز جديد.")
-end)
-]]></ProtectedString>
-  </Properties>
-</Item>
-<Item class="LocalScript" referent="RBX00000116">
-  <Properties>
-    <string name="Name">VoiceChatScaffold</string>
-    <ProtectedString name="Source"><![CDATA[local Players = game:GetService("Players")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="LocalScript" referent="25">
+        <Properties>
+          <string name="Name">VoiceChatScaffold</string>
+          <string name="Source"><![CDATA[local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local VoiceChatService = game:GetService("VoiceChatService")
 
@@ -6640,144 +6734,64 @@ end
 if isVoiceEnabled() then
 	makeIndicator()
 end
-]]></ProtectedString>
-  </Properties>
-</Item>
-</Item>
-</Item>
-<Item class="Workspace" referent="RBX00000030">
-  <Properties>
-    <string name="Name">Workspace</string>
-    <float name="Gravity">196.2</float>
-    <bool name="NeedsPivotMigration">false</bool>
-    <bool name="StreamingEnabled">true</bool>
-    <int name="StreamingMinRadius">512</int>
-    <int name="StreamingTargetRadius">1024</int>
-  </Properties>
-  <Item class="SpawnLocation" referent="RBX00000031">
-    <Properties>
-      <string name="Name">SpawnLocation</string>
-      <bool name="Anchored">true</bool>
-      <CoordinateFrame name="CFrame">
-        <X>-34</X>
-        <Y>2.5</Y>
-        <Z>0</Z>
-        <R00>1</R00>
-        <R01>0</R01>
-        <R02>0</R02>
-        <R10>0</R10>
-        <R11>1</R11>
-        <R12>0</R12>
-        <R20>-0</R20>
-        <R21>0</R21>
-        <R22>1</R22>
-      </CoordinateFrame>
-      <Color3uint8 name="Color3uint8">11382189</Color3uint8>
-      <Vector3 name="size">
-        <X>14</X>
-        <Y>1</Y>
-        <Z>14</Z>
-      </Vector3>
-      <float name="Transparency">0</float>
-      <bool name="Enabled">true</bool>
-      <bool name="Neutral">true</bool>
-      <bool name="AllowTeamChangeOnTouch">false</bool>
-      <bool name="CanCollide">true</bool>
-      <int name="Duration">0</int>
-    </Properties>
+]]></string>
+        </Properties>
+      </Item>
+    </Item>
   </Item>
-  <Item class="Part" referent="RBX00000032">
+  <Item class="Workspace" referent="26">
     <Properties>
-      <string name="Name">Baseplate</string>
-      <bool name="Anchored">true</bool>
-      <CoordinateFrame name="CFrame">
-        <X>0</X>
-        <Y>0</Y>
-        <Z>0</Z>
-        <R00>1</R00>
-        <R01>0</R01>
-        <R02>0</R02>
-        <R10>0</R10>
-        <R11>1</R11>
-        <R12>0</R12>
-        <R20>0</R20>
-        <R21>0</R21>
-        <R22>1</R22>
-      </CoordinateFrame>
-      <Color3uint8 name="Color3uint8">3421236</Color3uint8>
-      <bool name="CanCollide">true</bool>
-      <bool name="CanQuery">true</bool>
-      <bool name="CanTouch">true</bool>
-      <bool name="CastShadow">true</bool>
-      <Vector3 name="size">
-        <X>256</X>
-        <Y>1</Y>
-        <Z>256</Z>
-      </Vector3>
-      <float name="Transparency">0</float>
+      <string name="Name">Workspace</string>
+      <float name="Gravity">196.2</float>
+      <bool name="NeedsPivotMigration">false</bool>
+      <bool name="StreamingEnabled">true</bool>
+      <int name="StreamingMinRadius">512</int>
+      <int name="StreamingTargetRadius">1024</int>
     </Properties>
+    <Item class="Part" referent="27">
+      <Properties>
+        <string name="Name">Baseplate</string>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">true</bool>
+        <bool name="CanQuery">true</bool>
+        <bool name="CanTouch">true</bool>
+        <bool name="CastShadow">true</bool>
+        <Color3uint8 name="Color3uint8">3421236</Color3uint8>
+        <Vector3 name="Position">
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>256</X>
+          <Y>1</Y>
+          <Z>256</Z>
+        </Vector3>
+        <float name="Transparency">0</float>
+      </Properties>
+    </Item>
+    <Item class="SpawnLocation" referent="28">
+      <Properties>
+        <string name="Name">SpawnLocation</string>
+        <bool name="AllowTeamChangeOnTouch">false</bool>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">true</bool>
+        <Color3uint8 name="Color3uint8">11382189</Color3uint8>
+        <int name="Duration">0</int>
+        <bool name="Enabled">true</bool>
+        <bool name="Neutral">true</bool>
+        <Vector3 name="Position">
+          <X>-34</X>
+          <Y>2.5</Y>
+          <Z>0</Z>
+        </Vector3>
+        <Vector3 name="size">
+          <X>14</X>
+          <Y>1</Y>
+          <Z>14</Z>
+        </Vector3>
+        <float name="Transparency">0</float>
+      </Properties>
+    </Item>
   </Item>
-</Item>
-<Item class="Lighting" referent="RBX00000040">
-  <Properties>
-    <string name="Name">Lighting</string>
-    <Color3 name="Ambient">
-      <R>0.09</R>
-      <G>0.05</G>
-      <B>0.14</B>
-    </Color3>
-    <float name="Brightness">0.8</float>
-    <float name="ClockTime">0.2</float>
-    <float name="EnvironmentDiffuseScale">0.35</float>
-    <float name="EnvironmentSpecularScale">0.1</float>
-    <float name="ExposureCompensation">-0.15</float>
-    <Color3 name="FogColor">
-      <R>0.08</R>
-      <G>0.07</G>
-      <B>0.14</B>
-    </Color3>
-    <float name="FogEnd">220</float>
-    <float name="GeographicLatitude">20</float>
-    <bool name="GlobalShadows">true</bool>
-    <Color3 name="OutdoorAmbient">
-      <R>0.11</R>
-      <G>0.06</G>
-      <B>0.16</B>
-    </Color3>
-    <token name="Technology">4</token>
-  </Properties>
-  <Item class="Atmosphere" referent="RBX00000041">
-    <Properties>
-      <string name="Name">Atmosphere</string>
-      <Color3 name="Color">
-        <R>0.06</R>
-        <G>0.05</G>
-        <B>0.11</B>
-      </Color3>
-      <Color3 name="Decay">
-        <R>0.3</R>
-        <G>0.16</G>
-        <B>0.32</B>
-      </Color3>
-      <float name="Density">0.42</float>
-      <float name="Glare">0</float>
-      <float name="Haze">1.2</float>
-      <float name="Offset">0.1</float>
-    </Properties>
-  </Item>
-  <Item class="ColorCorrectionEffect" referent="RBX00000042">
-    <Properties>
-      <string name="Name">ColorCorrection</string>
-      <bool name="Enabled">true</bool>
-      <float name="Brightness">-0.05</float>
-      <float name="Contrast">0.2</float>
-      <float name="Saturation">-0.18</float>
-      <Color3 name="TintColor">
-        <R>0.8</R>
-        <G>0.68</G>
-        <B>1</B>
-      </Color3>
-    </Properties>
-  </Item>
-</Item>
 </roblox>
