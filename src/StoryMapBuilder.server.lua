@@ -903,4 +903,7 @@ local function buildMap()
 	end)
 end
 
-buildMap()
+local buildOk, buildErr = xpcall(buildMap, debug.traceback)
+if not buildOk then
+	warn(`Gateway to Hell story map build failed: {buildErr}`)
+end

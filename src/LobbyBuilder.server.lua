@@ -822,7 +822,6 @@ local function buildLobbyGeometry(spawnLocation: SpawnLocation, leaderboardAncho
 end
 
 local function applyLobbyLighting()
-    Lighting.Technology = Enum.Technology.Future
     Lighting.ClockTime = 0.2
     Lighting.Brightness = 0.8
     Lighting.Ambient = GameConfig.COLORS.PanelSoft
@@ -859,7 +858,10 @@ local function applyLobbyLighting()
 end
 
 local function prepareLobby()
-    applyLobbyLighting()
+    local lightingOk, lightingErr = pcall(applyLobbyLighting)
+    if not lightingOk then
+        warn(`Gateway to Hell lobby lighting setup failed: {lightingErr}`)
+    end
     ensureRemoteFolder()
     ensureSignalFolder()
 
@@ -923,7 +925,10 @@ local function prepareLobby()
     end
 end
 
-prepareLobby()
+local bootstrapOk, bootstrapErr = xpcall(prepareLobby, debug.traceback)
+if not bootstrapOk then
+    warn(`Gateway to Hell lobby bootstrap failed: {bootstrapErr}`)
+end
 
 local gameReadyEvent = ReplicatedStorage:WaitForChild(REMOTES_FOLDER_NAME):WaitForChild("GameReady")
 local function announceReady(player: Player)
