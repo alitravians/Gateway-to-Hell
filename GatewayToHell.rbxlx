@@ -3,27 +3,27 @@
     <Properties>
       <string name="Name">Lighting</string>
       <Color3 name="Ambient">
-        <R>0.09</R>
-        <G>0.05</G>
-        <B>0.14</B>
+        <R>0.306</R>
+        <G>0.243</G>
+        <B>0.29</B>
       </Color3>
-      <float name="Brightness">0.8</float>
-      <float name="ClockTime">0.2</float>
-      <float name="EnvironmentDiffuseScale">0.35</float>
-      <float name="EnvironmentSpecularScale">0.1</float>
-      <float name="ExposureCompensation">-0.15</float>
+      <float name="Brightness">2.4</float>
+      <float name="ClockTime">0.28</float>
+      <float name="EnvironmentDiffuseScale">0.6</float>
+      <float name="EnvironmentSpecularScale">0.2</float>
+      <float name="ExposureCompensation">0.15</float>
       <Color3 name="FogColor">
-        <R>0.08</R>
-        <G>0.07</G>
-        <B>0.14</B>
+        <R>0.118</R>
+        <G>0.094</G>
+        <B>0.157</B>
       </Color3>
-      <float name="FogEnd">220</float>
+      <float name="FogEnd">420</float>
       <float name="GeographicLatitude">20</float>
       <bool name="GlobalShadows">true</bool>
       <Color3 name="OutdoorAmbient">
-        <R>0.11</R>
-        <G>0.06</G>
-        <B>0.16</B>
+        <R>0.259</R>
+        <G>0.196</G>
+        <B>0.275</B>
       </Color3>
       <token name="Technology">4</token>
     </Properties>
@@ -40,22 +40,22 @@
           <G>0.16</G>
           <B>0.32</B>
         </Color3>
-        <float name="Density">0.42</float>
+        <float name="Density">0.18</float>
         <float name="Glare">0</float>
-        <float name="Haze">1.2</float>
+        <float name="Haze">0.4</float>
         <float name="Offset">0.1</float>
       </Properties>
     </Item>
     <Item class="ColorCorrectionEffect" referent="2">
       <Properties>
         <string name="Name">ColorCorrection</string>
-        <float name="Brightness">-0.05</float>
-        <float name="Contrast">0.2</float>
+        <float name="Brightness">0.04</float>
+        <float name="Contrast">0.1</float>
         <bool name="Enabled">true</bool>
-        <float name="Saturation">-0.18</float>
+        <float name="Saturation">-0.08</float>
         <Color3 name="TintColor">
-          <R>0.8</R>
-          <G>0.68</G>
+          <R>0.839</R>
+          <G>0.776</G>
           <B>1</B>
         </Color3>
       </Properties>
@@ -1193,8 +1193,8 @@ end
 local function attachFlickerLight(part: BasePart, lightColor: Color3)
     local light = Instance.new("PointLight")
     light.Color = lightColor
-    light.Range = 14
-    light.Brightness = 1
+    light.Range = 24
+    light.Brightness = 2.2
     light.Shadows = true
     light.Parent = part
 
@@ -1908,15 +1908,15 @@ local function buildLobbyGeometry(spawnLocation: SpawnLocation, leaderboardAncho
 end
 
 local function applyLobbyLighting()
-    Lighting.ClockTime = 0.2
-    Lighting.Brightness = 0.8
-    Lighting.Ambient = GameConfig.COLORS.PanelSoft
-    Lighting.OutdoorAmbient = GameConfig.COLORS.Background
-    Lighting.FogColor = Color3.fromRGB(18, 14, 28)
-    Lighting.FogEnd = 220
-    Lighting.EnvironmentDiffuseScale = 0.35
-    Lighting.EnvironmentSpecularScale = 0.1
-    Lighting.ExposureCompensation = -0.15
+    Lighting.ClockTime = 0.28
+    Lighting.Brightness = 2.4
+    Lighting.Ambient = Color3.fromRGB(78, 62, 74)
+    Lighting.OutdoorAmbient = Color3.fromRGB(66, 50, 70)
+    Lighting.FogColor = Color3.fromRGB(30, 24, 40)
+    Lighting.FogEnd = 420
+    Lighting.EnvironmentDiffuseScale = 0.6
+    Lighting.EnvironmentSpecularScale = 0.2
+    Lighting.ExposureCompensation = 0.15
 
     local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere")
     if not atmosphere then
@@ -1924,11 +1924,11 @@ local function applyLobbyLighting()
         atmosphere.Parent = Lighting
     end
 
-    atmosphere.Color = Color3.fromRGB(15, 11, 24)
+    atmosphere.Color = Color3.fromRGB(24, 19, 34)
     atmosphere.Decay = Color3.fromRGB(56, 29, 64)
-    atmosphere.Density = 0.42
+    atmosphere.Density = 0.18
     atmosphere.Glare = 0
-    atmosphere.Haze = 1.2
+    atmosphere.Haze = 0.4
     atmosphere.Offset = 0.1
 
     local correction = Lighting:FindFirstChildOfClass("ColorCorrectionEffect")
@@ -1937,10 +1937,10 @@ local function applyLobbyLighting()
         correction.Parent = Lighting
     end
 
-    correction.Brightness = -0.05
-    correction.Contrast = 0.2
-    correction.Saturation = -0.18
-    correction.TintColor = Color3.fromRGB(200, 170, 255)
+    correction.Brightness = 0.04
+    correction.Contrast = 0.1
+    correction.Saturation = -0.08
+    correction.TintColor = Color3.fromRGB(214, 198, 255)
 end
 
 local function prepareLobby()

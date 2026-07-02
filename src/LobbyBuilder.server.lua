@@ -107,8 +107,8 @@ end
 local function attachFlickerLight(part: BasePart, lightColor: Color3)
     local light = Instance.new("PointLight")
     light.Color = lightColor
-    light.Range = 14
-    light.Brightness = 1
+    light.Range = 24
+    light.Brightness = 2.2
     light.Shadows = true
     light.Parent = part
 
@@ -822,15 +822,15 @@ local function buildLobbyGeometry(spawnLocation: SpawnLocation, leaderboardAncho
 end
 
 local function applyLobbyLighting()
-    Lighting.ClockTime = 0.2
-    Lighting.Brightness = 0.8
-    Lighting.Ambient = GameConfig.COLORS.PanelSoft
-    Lighting.OutdoorAmbient = GameConfig.COLORS.Background
-    Lighting.FogColor = Color3.fromRGB(18, 14, 28)
-    Lighting.FogEnd = 220
-    Lighting.EnvironmentDiffuseScale = 0.35
-    Lighting.EnvironmentSpecularScale = 0.1
-    Lighting.ExposureCompensation = -0.15
+    Lighting.ClockTime = 0.28
+    Lighting.Brightness = 2.4
+    Lighting.Ambient = Color3.fromRGB(78, 62, 74)
+    Lighting.OutdoorAmbient = Color3.fromRGB(66, 50, 70)
+    Lighting.FogColor = Color3.fromRGB(30, 24, 40)
+    Lighting.FogEnd = 420
+    Lighting.EnvironmentDiffuseScale = 0.6
+    Lighting.EnvironmentSpecularScale = 0.2
+    Lighting.ExposureCompensation = 0.15
 
     local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere")
     if not atmosphere then
@@ -838,11 +838,11 @@ local function applyLobbyLighting()
         atmosphere.Parent = Lighting
     end
 
-    atmosphere.Color = Color3.fromRGB(15, 11, 24)
+    atmosphere.Color = Color3.fromRGB(24, 19, 34)
     atmosphere.Decay = Color3.fromRGB(56, 29, 64)
-    atmosphere.Density = 0.42
+    atmosphere.Density = 0.18
     atmosphere.Glare = 0
-    atmosphere.Haze = 1.2
+    atmosphere.Haze = 0.4
     atmosphere.Offset = 0.1
 
     local correction = Lighting:FindFirstChildOfClass("ColorCorrectionEffect")
@@ -851,10 +851,10 @@ local function applyLobbyLighting()
         correction.Parent = Lighting
     end
 
-    correction.Brightness = -0.05
-    correction.Contrast = 0.2
-    correction.Saturation = -0.18
-    correction.TintColor = Color3.fromRGB(200, 170, 255)
+    correction.Brightness = 0.04
+    correction.Contrast = 0.1
+    correction.Saturation = -0.08
+    correction.TintColor = Color3.fromRGB(214, 198, 255)
 end
 
 local function prepareLobby()
