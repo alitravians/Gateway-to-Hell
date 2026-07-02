@@ -158,7 +158,6 @@ local function unlock(player, achievementId)
 	record.Unlocked[achievementId] = true
 	player:SetAttribute("AchievementCount", countUnlocked(record))
 	notifyPlayer(player, achievementId)
-	saveRecord(player.UserId)
 end
 
 local function syncPlayer(player)

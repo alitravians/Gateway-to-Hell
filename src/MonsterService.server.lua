@@ -31,7 +31,7 @@ local pathIndex = 1
 local nextRepathAt = 0
 local nextRelocateAt = 0
 local lastTelemetryAt = 0
-local lastCatchAt = 0
+local lastCatchAtByUserId = {}
 local lastSearchTarget = nil
 
 local VISION_RANGE = 80
@@ -348,11 +348,12 @@ end
 
 local function catchPlayer(player)
 	local now = os.clock()
-	if now - lastCatchAt < 1.5 then
+	local lastCatchAt = lastCatchAtByUserId[player.UserId]
+	if lastCatchAt and now - lastCatchAt < 1.5 then
 		return
 	end
 
-	lastCatchAt = now
+	lastCatchAtByUserId[player.UserId] = now
 	monsterCaughtPlayer:Fire({
 		Player = player,
 		Source = state,
@@ -371,6 +372,7 @@ local function cleanupMonster()
 	lastKnownPosition = nil
 	lastSearchTarget = nil
 	state = "Idle"
+	lastCatchAtByUserId = {}
 	safeDestroy(monsterModel)
 	monsterModel = nil
 	monsterHumanoid = nil
