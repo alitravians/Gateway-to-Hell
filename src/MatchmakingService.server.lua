@@ -45,6 +45,80 @@ local function removePlayerFromAllQueues(userId)
 	playerQueueKey[userId] = nil
 end
 
+local function startCountdownForKey(key, modeId, playerCount)
+	if activeCountdowns[key] then
+		return
+	end
+
+	activeCountdowns[key] = true
+
+	task.spawn(function()
+		for remaining = GameConfig.COUNTDOWN_SECONDS, 0, -1 do
+			local queue = queuesByKey[key] or {}
+			for _, userId in ipairs(queue) do
+				local player = Players:GetPlayerByUserId(userId)
+				if player then
+					countdownEvent:FireClient(player, {
+						ModeId = modeId,
+						PlayerCount = playerCount,
+						Remaining = remaining,
+					})
+				end
+			end
+			task.wait(1)
+		end
+
+		local queue = queuesByKey[key] or {}
+		local validQueue = {}
+		local launchUsers = {}
+		local launchedSet = {}
+		local launchedPlayers = {}
+		for _, userId in ipairs(queue) do
+			if not launchedSet[userId] then
+				local player = Players:GetPlayerByUserId(userId)
+				if player then
+					table.insert(validQueue, userId)
+					if #launchUsers < playerCount then
+						table.insert(launchUsers, userId)
+						table.insert(launchedPlayers, player)
+						launchedSet[userId] = true
+					end
+				else
+					playerQueueKey[userId] = nil
+				end
+			end
+		end
+
+		if #launchUsers < playerCount then
+			queuesByKey[key] = validQueue
+			activeCountdowns[key] = nil
+			return
+		end
+
+		local leftoverQueue = {}
+		for _, userId in ipairs(validQueue) do
+			if not launchedSet[userId] then
+				table.insert(leftoverQueue, userId)
+			end
+		end
+		queuesByKey[key] = leftoverQueue
+		for _, userId in ipairs(launchUsers) do
+			playerQueueKey[userId] = nil
+		end
+
+		roundStartRequested:Fire({
+			Players = launchedPlayers,
+			PlayerCount = playerCount,
+			ModeId = modeId,
+		})
+
+		activeCountdowns[key] = nil
+		if #leftoverQueue >= playerCount then
+			startCountdownForKey(key, modeId, playerCount)
+		end
+	end)
+end
+
 local function fireChoice(player)
 	openChoiceEvent:FireClient(player, {
 		Modes = GameConfig.GAME_MODES,
@@ -69,56 +143,6 @@ local function getPlayerFromHit(hit)
 	end
 
 	return nil
-end
-
-local function startCountdownForKey(key, modeId, playerCount)
-	if activeCountdowns[key] then
-		return
-	end
-
-	activeCountdowns[key] = true
-
-	task.spawn(function()
-		local queue = queuesByKey[key]
-		for remaining = GameConfig.COUNTDOWN_SECONDS, 0, -1 do
-			for _, userId in ipairs(queue) do
-				local player = Players:GetPlayerByUserId(userId)
-				if player then
-					countdownEvent:FireClient(player, {
-						ModeId = modeId,
-						PlayerCount = playerCount,
-						Remaining = remaining,
-					})
-				end
-			end
-			task.wait(1)
-		end
-
-		local queuedPlayers = {}
-		for _, userId in ipairs(queue) do
-			local player = Players:GetPlayerByUserId(userId)
-			if player then
-				table.insert(queuedPlayers, player)
-			end
-		end
-
-		if #queuedPlayers < playerCount then
-			activeCountdowns[key] = nil
-			return
-		end
-
-		roundStartRequested:Fire({
-			Players = queuedPlayers,
-			PlayerCount = playerCount,
-			ModeId = modeId,
-		})
-
-		queuesByKey[key] = {}
-		for _, player in ipairs(queuedPlayers) do
-			playerQueueKey[player.UserId] = nil
-		end
-		activeCountdowns[key] = nil
-	end)
 end
 
 matchmakingCircle.Touched:Connect(function(hit)

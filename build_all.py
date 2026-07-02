@@ -47,7 +47,6 @@ MANIFEST = [
     ("src/VoiceChatScaffold.client.lua",  "LocalScript", "VoiceChatScaffold",  "StarterPlayerScripts"),
 ]
 
-REF_ATTR = 'referent="RBX{idx:08d}"'
 
 
 def script_block(cls, name, source, idx):

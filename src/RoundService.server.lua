@@ -575,13 +575,15 @@ local function returnPlayerToLobby(player: Player, index: number)
 end
 
 local function allParticipantsDead(round)
+	local hasParticipant = false
 	for _, state in pairs(round.playerStates) do
-		if state.status == "Alive" or state.status == "Downed" then
+		hasParticipant = true
+		if state.status ~= "Dead" then
 			return false
 		end
 	end
 
-	return true
+	return hasParticipant
 end
 
 local function endRound(round, result: string, reason: string)
@@ -1165,6 +1167,8 @@ local function beginRound(payload)
 		secretObjectiveComplete = false,
 		secretObjectivePlayer = nil,
 		endingType = nil,
+		endlessPressureLevel = 0,
+		nextEndlessPulseAt = nil,
 		playersArray = playersForRound,
 		playersByUserId = {},
 		playerStates = {},
@@ -1227,6 +1231,19 @@ local function beginRound(payload)
 				startHunt(round)
 			end
 
+			if round.huntActive and getGameplayTuning(round.modeId).EndlessPressure then
+				local endlessPulseSeconds = getGameplayTuning(round.modeId).EndlessPulseSeconds or 90
+				if not round.nextEndlessPulseAt then
+					round.nextEndlessPulseAt = now + endlessPulseSeconds
+				end
+				if now >= round.nextEndlessPulseAt then
+					round.endlessPressureLevel = (round.endlessPressureLevel or 0) + 1
+					round.nextEndlessPulseAt = now + endlessPulseSeconds
+					round.huntPhase = `Hunt • ضغط {round.endlessPressureLevel}`
+					broadcastState(round)
+				end
+			end
+
 			for _, player in ipairs(round.playersArray) do
 				local state = round.playerStates[player.UserId]
 				if state and state.status == "Downed" and state.bleedOutAt and now >= state.bleedOutAt then
@@ -1274,7 +1291,11 @@ local function beginRound(payload)
 					end
 
 					if round.huntActive then
-						sanityDelta -= 0.15 * dt
+						local huntSanityDrain = 0.15
+						if getGameplayTuning(round.modeId).EndlessPressure then
+							huntSanityDrain += 0.1 * (round.endlessPressureLevel or 0)
+						end
+						sanityDelta -= huntSanityDrain * dt
 					end
 
 					if math.abs(sanityDelta) > 0 then
@@ -1315,14 +1336,23 @@ Players.PlayerRemoving:Connect(function(player)
 	local round = activeRound
 	local state = round.playerStates[player.UserId]
 	if state then
+		local wasActive = state.status == "Alive" or state.status == "Downed"
 		releaseHiddenState(round, state)
 		clearParticipantVisuals(state)
+		if wasActive then
+			round.deadCount = (round.deadCount or 0) + 1
+			state.status = "Dead"
+		end
 	end
 	round.playersByUserId[player.UserId] = nil
 	round.playerStates[player.UserId] = nil
 
 	if not round.ending then
-		maybeResolveRound(round)
+		if next(round.playerStates) == nil then
+			endRound(round, "Lose", "group_empty")
+		else
+			maybeResolveRound(round)
+		end
 	end
 end)
 
