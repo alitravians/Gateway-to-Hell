@@ -89,7 +89,7 @@ local function startCountdownForKey(key, modeId, playerCount)
 			end
 		end
 
-		if #launchUsers < playerCount then
+		if #launchUsers == 0 then
 			queuesByKey[key] = validQueue
 			activeCountdowns[key] = nil
 			for _, userId in ipairs(validQueue) do
@@ -121,7 +121,7 @@ local function startCountdownForKey(key, modeId, playerCount)
 		})
 
 		activeCountdowns[key] = nil
-		if #leftoverQueue >= playerCount then
+		if #leftoverQueue >= 1 then
 			startCountdownForKey(key, modeId, playerCount)
 		end
 	end)
@@ -225,7 +225,7 @@ submitChoiceEvent.OnServerEvent:Connect(function(player, payload)
 	playerQueueKey[player.UserId] = key
 	table.insert(queue, player.UserId)
 
-	if #queue >= playerCount then
+	if #queue >= 1 then
 		startCountdownForKey(key, modeId, playerCount)
 	end
 end)

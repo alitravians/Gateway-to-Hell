@@ -1,6 +1,5 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TweenService = game:GetService("TweenService")
 
 local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
 
@@ -73,6 +72,13 @@ local function makeButton(text)
     return button
 end
 
+local reopenButton = makeButton("القائمة ☰")
+reopenButton.AnchorPoint = Vector2.new(0, 0)
+reopenButton.Position = UDim2.new(0.03, 0, 0.03, 0)
+reopenButton.Size = UDim2.new(0.14, 0, 0.06, 0)
+reopenButton.Visible = false
+reopenButton.Parent = screenGui
+
 local playButton = makeButton("ابدأ اللعب")
 playButton.Parent = buttonPanel
 
@@ -128,6 +134,16 @@ bodyLayout.SortOrder = Enum.SortOrder.LayoutOrder
 bodyLayout.Parent = contentBody
 
 local activePanel = nil
+
+local function setMenuVisible(visible)
+	root.Visible = visible
+	reopenButton.Visible = not visible
+	if visible then
+		contentPanel.Visible = false
+		contentBody.Visible = false
+		activePanel = nil
+	end
+end
 
 local function setContent(lines, header)
     contentTitle.Text = header
@@ -194,14 +210,11 @@ local function togglePanel(name)
 end
 
 playButton.MouseButton1Click:Connect(function()
-    contentPanel.Visible = false
-    contentBody.Visible = false
-    activePanel = nil
+	setMenuVisible(false)
+end)
 
-    local flash = TweenService:Create(root, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        BackgroundColor3 = GameConfig.COLORS.PanelSoft,
-    })
-    flash:Play()
+reopenButton.MouseButton1Click:Connect(function()
+	setMenuVisible(true)
 end)
 
 modesButton.MouseButton1Click:Connect(function()
