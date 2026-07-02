@@ -392,14 +392,6 @@ local function runAI(huntId)
 				lastKnownPosition = targetPos
 				monsterHumanoid.WalkSpeed = CHASE_SPEED * getSpeedMultiplier()
 				state = "CHASE"
-				setState("CHASE", {
-					TargetUserId = targetPlayer.UserId,
-					TargetName = targetPlayer.Name,
-					Distance = target.Distance,
-					Intensity = math.clamp(1 - (target.Distance / getVisionRange()), 0, 1),
-					LastKnownPosition = lastKnownPosition,
-					Position = monsterRoot.Position,
-				})
 				if not currentGoal or (currentGoal - targetPos).Magnitude > 6 or now >= nextRepathAt then
 					refreshNavigation(targetPos, false)
 				end
@@ -428,13 +420,6 @@ local function runAI(huntId)
 			if goal and (not currentGoal or (currentGoal - goal).Magnitude > 4 or now >= nextRepathAt) then
 				refreshNavigation(goal, state == "SEARCH")
 			end
-			setState(state, {
-				Distance = nil,
-				Intensity = 0,
-				LastKnownPosition = lastKnownPosition,
-				SearchTarget = lastSearchTarget,
-				Position = monsterRoot.Position,
-			})
 		end
 
 		advanceNavigation()

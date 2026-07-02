@@ -95,7 +95,7 @@ Rojo يقرأ `default.project.json` ويجمع place كاملًا جديدًا 
 
 1. حدّد هل هي server أو client أو shared
 2. أضف السكربت في `src/`
-3. حدّث `build_all.py` إذا احتجت class/service جديد
+3. حدّث `default.project.json` إذا احتجت class/service جديد، ثم أعد البناء بـ `~/.local/bin/rojo build . -o GatewayToHell.rbxlx`
 4. شغّل lint
 5. أعد توليد `GatewayToHell.rbxlx`
 

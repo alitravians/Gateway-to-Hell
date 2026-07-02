@@ -618,10 +618,14 @@ local function endRound(round, result: string, reason: string)
 	cleanupRoundVisuals(round)
 
 	local survivors = {}
+	local participants = {}
 	for _, player in pairs(round.playersByUserId) do
 		local state = round.playerStates[player.UserId]
-		if player.Parent == Players and state and state.status ~= "Dead" then
-			table.insert(survivors, player)
+		if player.Parent == Players and state then
+			table.insert(participants, player)
+			if state.status ~= "Dead" then
+				table.insert(survivors, player)
+			end
 		end
 	end
 
@@ -633,12 +637,16 @@ local function endRound(round, result: string, reason: string)
 			end
 		end
 
-		for index, player in ipairs(survivors) do
+		for index, player in ipairs(participants) do
 			if player.Parent == Players then
+				local state = round.playerStates[player.UserId]
 				local character = player.Character
 				if character then
 					setCharacterStatus(character, "Alive")
 					freezeCharacter(character, false)
+				end
+				if state then
+					state.status = "Alive"
 				end
 				returnPlayerToLobby(player, index)
 			end
