@@ -535,11 +535,6 @@ local function buildSoundsPuzzle(root: Instance)
 			end
 		end)
 	end
-
-	controllers.Sounds.Reset = function()
-		triggerIndex = 1
-		solved = false
-	end
 end
 
 local function buildImmersionSystems(root: Instance)

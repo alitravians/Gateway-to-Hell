@@ -27,11 +27,11 @@ local roundOutcomeEvent = remotesFolder:WaitForChild("RoundOutcome") :: RemoteEv
 local toggleFlashlightRequest = remotesFolder:WaitForChild("ToggleFlashlightRequest") :: RemoteEvent
 
 local lobbySpawn = Workspace:WaitForChild("SpawnLocation") :: SpawnLocation
-local storyEntranceSpawn = Workspace:WaitForChild("StoryEntranceSpawn") :: BasePart
-local storyExitGate = Workspace:WaitForChild("StoryExitGate") :: BasePart
-local storyExitTrigger = Workspace:WaitForChild("StoryExitTrigger") :: BasePart
-local spectatorSpawn = Workspace:WaitForChild("StorySpectatorSpawn") :: BasePart
 local storyGeometry = Workspace:WaitForChild("StoryMapGeometry")
+local storyEntranceSpawn = storyGeometry:WaitForChild("StoryEntranceSpawn") :: BasePart
+local storyExitGate = storyGeometry:WaitForChild("StoryExitGate") :: BasePart
+local storyExitTrigger = storyGeometry:WaitForChild("StoryExitTrigger") :: BasePart
+local spectatorSpawn = storyGeometry:WaitForChild("StorySpectatorSpawn") :: BasePart
 
 local ROUND_RETURN_DELAY = 2.5
 local ROUND_START_TELEPORT_DELAY = 0.5
