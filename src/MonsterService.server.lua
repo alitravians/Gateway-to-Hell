@@ -403,6 +403,7 @@ local function runAI(huntId)
 				end
 			else
 				target = nil
+				targetPlayer = nil
 			end
 		else
 			targetPlayer = nil

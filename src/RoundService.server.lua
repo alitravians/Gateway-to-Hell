@@ -42,6 +42,7 @@ local SANITY_UPDATE_INTERVAL = 1
 
 local activeRound = nil
 local exitTouchConnection = nil
+local cachedLightProbes = {}
 
 local function getModeTimeLimit(modeId: string): number
 	return GameConfig.MODE_TIME_LIMITS[modeId] or GameConfig.MODE_TIME_LIMITS[GameConfig.DEFAULT_MODE_ID]
@@ -526,21 +527,23 @@ local function changeSanity(state, amount)
 	updateCharacterAttributes(state)
 end
 
+local function rebuildLightProbeCache()
+	cachedLightProbes = {}
+	for _, descendant in ipairs(storyGeometry:GetDescendants()) do
+		if descendant:IsA("BasePart") and descendant.Name == "StoryLightProbe" then
+			table.insert(cachedLightProbes, descendant)
+		end
+	end
+end
+
 local function isNearLight(character: Model)
 	local root = getCharacterRoot(character)
 	if not root or not root:IsA("BasePart") then
 		return false
 	end
 
-	local probes = {}
-	for _, descendant in ipairs(storyGeometry:GetDescendants()) do
-		if descendant:IsA("BasePart") and descendant.Name == "StoryLightProbe" then
-			table.insert(probes, descendant)
-		end
-	end
-
-	for _, probe in ipairs(probes) do
-		if (probe.Position - root.Position).Magnitude <= 18 then
+	for _, probe in ipairs(cachedLightProbes) do
+		if probe.Parent and (probe.Position - root.Position).Magnitude <= 18 then
 			return true
 		end
 	end
@@ -1142,6 +1145,7 @@ local function beginRound(payload)
 	local modeName = getModeName(modeId)
 	local timeLimit = getModeTimeLimit(modeId)
 	local modeTuning = getModeTuning(modeId)
+	rebuildLightProbeCache()
 	local puzzleDefs = StoryPuzzles.getOrderedDefinitions()
 	local round = {
 		roundId = tostring(os.clock()) .. `_{math.random(1000, 9999)}`,
@@ -1255,7 +1259,7 @@ local function beginRound(payload)
 						end
 
 						if state.hiding then
-							sanityDelta += sanityTuning.HiddenDrainPerSecond * dt
+							sanityDelta -= sanityTuning.HiddenDrainPerSecond * dt
 						end
 					end
 

@@ -65,14 +65,7 @@ python3 publish.py --lint-only
 
 ## تخصيص الريبو قبل النشر
 
-افتح `publish.py` وعدّل:
-
-```python
-UNIVERSE_ID = "REPLACE_ME"
-PLACE_ID = "REPLACE_ME"
-```
-
-لا تحاول النشر الحقيقي قبل استبدال هاتين القيمتين.
+افتح `publish.py` إذا كنت تستهدف تجربة أخرى، وعدّل القيم الرقمية الحالية لـ `UNIVERSE_ID` و `PLACE_ID` هناك. القيم الموجودة في الملف مضبوطة بالفعل على تجربة بوابة الجحيم الحالية.
 
 ## الاستخدام
 
@@ -133,7 +126,7 @@ python3 publish.py --skip-lint
 تحقق من:
 
 - أن `ROBLOX_PUBLISH_API_KEY` موجود
-- أن `UNIVERSE_ID` و `PLACE_ID` ليسا `REPLACE_ME`
+- أن `UNIVERSE_ID` و `PLACE_ID` مضبوطان على التجربة الحالية، أو حدّثهما في `publish.py` إذا كنت تستهدف تجربة أخرى
 - أن API key لديه صلاحية الكتابة
 
 ### المشكلة: build يفشل

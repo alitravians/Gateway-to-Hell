@@ -417,7 +417,7 @@ local function buildCandlesPuzzle(root: Instance)
 
 	for index, position in ipairs(candlePositions) do
 		local candle = createPart(root, `Candle{index}`, Vector3.new(0.5, 1.3, 0.5), CFrame.new(position), Color3.fromRGB(75, 56, 48), Enum.Material.SmoothPlastic, true, true, 0, true)
-		local flame = createPart(candle, `CandleFlame`, Vector3.new(0.26, 0.45, 0.26), CFrame.new(0, 1, 0), Color3.fromRGB(255, 134, 72), Enum.Material.Neon, true, false, 1, false)
+		local flame = createPart(candle, `CandleFlame`, Vector3.new(0.26, 0.45, 0.26), CFrame.new(position + Vector3.new(0, 1, 0)), Color3.fromRGB(255, 134, 72), Enum.Material.Neon, true, false, 1, false)
 		local light = Instance.new("PointLight")
 		light.Color = Color3.fromRGB(255, 144, 82)
 		light.Brightness = 0.0
@@ -509,7 +509,7 @@ local function buildSoundsPuzzle(root: Instance)
 
 	for index, position in ipairs(padPositions) do
 		local pad = createPart(root, `SoundPad{index}`, Vector3.new(2.8, 0.45, 2.8), CFrame.new(position), Color3.fromRGB(55, 33, 36), Enum.Material.WoodPlanks, true, true, 0, true)
-		local speaker = createPart(pad, `SoundSpeaker`, Vector3.new(1.1, 1.1, 1.1), CFrame.new(0, 0.75, 0), Color3.fromRGB(104, 64, 48), Enum.Material.Metal, true, false, 0, false)
+		local speaker = createPart(pad, `SoundSpeaker`, Vector3.new(1.1, 1.1, 1.1), CFrame.new(position + Vector3.new(0, 0.75, 0)), Color3.fromRGB(104, 64, 48), Enum.Material.Metal, true, false, 0, false)
 		local light = Instance.new("PointLight")
 		light.Color = Color3.fromRGB(255, 93, 61)
 		light.Brightness = 0.9
@@ -548,8 +548,8 @@ local function buildImmersionSystems(root: Instance)
 	local batteryStates = {}
 
 	local function setHidePrompt(state, occupied)
-		state.prompt.ActionText = if occupied then "خروج" else "اختباء"
-		state.prompt.ObjectText = state.label
+		state.Prompt.ActionText = if occupied then "خروج" else "اختباء"
+		state.Prompt.ObjectText = state.Label
 	end
 
 	local function resetHideSpot(state)
@@ -902,11 +902,6 @@ local function buildMap()
 
 	roundStartRequested.Event:Connect(function()
 		resetAllPuzzleState()
-		for _, controller in pairs(controllers) do
-			if controller.Reset then
-				controller.Reset()
-			end
-		end
 	end)
 end
 

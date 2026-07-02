@@ -1290,7 +1290,7 @@ local function resolveBoardEntries()
 end
 
 local function applyEntry(row, index, entry)
-    row.Visible = true
+    row.Row.Visible = true
     row.RankLabel.Text = `#{index}`
     row.AvatarLabel.Image = avatarThumb(entry.UserId)
     row.NameLabel.Text = entry.Username
@@ -1298,7 +1298,7 @@ local function applyEntry(row, index, entry)
 end
 
 local function applyPlaceholder(row, index)
-    row.Visible = true
+    row.Row.Visible = true
     row.RankLabel.Text = `#{index}`
     row.AvatarLabel.Image = ""
     row.NameLabel.Text = "—"
@@ -1309,7 +1309,7 @@ local function applySampleBoard()
     for index = 1, MAX_ENTRIES do
         local row = rowTemplates[index]
         local entry = SAMPLE_ENTRIES[index]
-        row.Visible = true
+        row.Row.Visible = true
         row.RankLabel.Text = `#{index}`
         row.AvatarLabel.Image = avatarThumb(entry.UserId)
         row.NameLabel.Text = entry.Name
@@ -1873,6 +1873,7 @@ local SANITY_UPDATE_INTERVAL = 1
 
 local activeRound = nil
 local exitTouchConnection = nil
+local cachedLightProbes = {}
 
 local function getModeTimeLimit(modeId: string): number
 	return GameConfig.MODE_TIME_LIMITS[modeId] or GameConfig.MODE_TIME_LIMITS[GameConfig.DEFAULT_MODE_ID]
@@ -2357,21 +2358,23 @@ local function changeSanity(state, amount)
 	updateCharacterAttributes(state)
 end
 
+local function rebuildLightProbeCache()
+	cachedLightProbes = {}
+	for _, descendant in ipairs(storyGeometry:GetDescendants()) do
+		if descendant:IsA("BasePart") and descendant.Name == "StoryLightProbe" then
+			table.insert(cachedLightProbes, descendant)
+		end
+	end
+end
+
 local function isNearLight(character: Model)
 	local root = getCharacterRoot(character)
 	if not root or not root:IsA("BasePart") then
 		return false
 	end
 
-	local probes = {}
-	for _, descendant in ipairs(storyGeometry:GetDescendants()) do
-		if descendant:IsA("BasePart") and descendant.Name == "StoryLightProbe" then
-			table.insert(probes, descendant)
-		end
-	end
-
-	for _, probe in ipairs(probes) do
-		if (probe.Position - root.Position).Magnitude <= 18 then
+	for _, probe in ipairs(cachedLightProbes) do
+		if probe.Parent and (probe.Position - root.Position).Magnitude <= 18 then
 			return true
 		end
 	end
@@ -2973,6 +2976,7 @@ local function beginRound(payload)
 	local modeName = getModeName(modeId)
 	local timeLimit = getModeTimeLimit(modeId)
 	local modeTuning = getModeTuning(modeId)
+	rebuildLightProbeCache()
 	local puzzleDefs = StoryPuzzles.getOrderedDefinitions()
 	local round = {
 		roundId = tostring(os.clock()) .. `_{math.random(1000, 9999)}`,
@@ -3086,7 +3090,7 @@ local function beginRound(payload)
 						end
 
 						if state.hiding then
-							sanityDelta += sanityTuning.HiddenDrainPerSecond * dt
+							sanityDelta -= sanityTuning.HiddenDrainPerSecond * dt
 						end
 					end
 
@@ -3566,6 +3570,7 @@ local function runAI(huntId)
 				end
 			else
 				target = nil
+				targetPlayer = nil
 			end
 		else
 			targetPlayer = nil
@@ -4105,7 +4110,7 @@ local function buildCandlesPuzzle(root: Instance)
 
 	for index, position in ipairs(candlePositions) do
 		local candle = createPart(root, `Candle{index}`, Vector3.new(0.5, 1.3, 0.5), CFrame.new(position), Color3.fromRGB(75, 56, 48), Enum.Material.SmoothPlastic, true, true, 0, true)
-		local flame = createPart(candle, `CandleFlame`, Vector3.new(0.26, 0.45, 0.26), CFrame.new(0, 1, 0), Color3.fromRGB(255, 134, 72), Enum.Material.Neon, true, false, 1, false)
+		local flame = createPart(candle, `CandleFlame`, Vector3.new(0.26, 0.45, 0.26), CFrame.new(position + Vector3.new(0, 1, 0)), Color3.fromRGB(255, 134, 72), Enum.Material.Neon, true, false, 1, false)
 		local light = Instance.new("PointLight")
 		light.Color = Color3.fromRGB(255, 144, 82)
 		light.Brightness = 0.0
@@ -4197,7 +4202,7 @@ local function buildSoundsPuzzle(root: Instance)
 
 	for index, position in ipairs(padPositions) do
 		local pad = createPart(root, `SoundPad{index}`, Vector3.new(2.8, 0.45, 2.8), CFrame.new(position), Color3.fromRGB(55, 33, 36), Enum.Material.WoodPlanks, true, true, 0, true)
-		local speaker = createPart(pad, `SoundSpeaker`, Vector3.new(1.1, 1.1, 1.1), CFrame.new(0, 0.75, 0), Color3.fromRGB(104, 64, 48), Enum.Material.Metal, true, false, 0, false)
+		local speaker = createPart(pad, `SoundSpeaker`, Vector3.new(1.1, 1.1, 1.1), CFrame.new(position + Vector3.new(0, 0.75, 0)), Color3.fromRGB(104, 64, 48), Enum.Material.Metal, true, false, 0, false)
 		local light = Instance.new("PointLight")
 		light.Color = Color3.fromRGB(255, 93, 61)
 		light.Brightness = 0.9
@@ -4236,8 +4241,8 @@ local function buildImmersionSystems(root: Instance)
 	local batteryStates = {}
 
 	local function setHidePrompt(state, occupied)
-		state.prompt.ActionText = if occupied then "خروج" else "اختباء"
-		state.prompt.ObjectText = state.label
+		state.Prompt.ActionText = if occupied then "خروج" else "اختباء"
+		state.Prompt.ObjectText = state.Label
 	end
 
 	local function resetHideSpot(state)
@@ -4590,11 +4595,6 @@ local function buildMap()
 
 	roundStartRequested.Event:Connect(function()
 		resetAllPuzzleState()
-		for _, controller in pairs(controllers) do
-			if controller.Reset then
-				controller.Reset()
-			end
-		end
 	end)
 end
 

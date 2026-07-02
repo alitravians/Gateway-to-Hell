@@ -335,7 +335,7 @@ local function resolveBoardEntries()
 end
 
 local function applyEntry(row, index, entry)
-    row.Visible = true
+    row.Row.Visible = true
     row.RankLabel.Text = `#{index}`
     row.AvatarLabel.Image = avatarThumb(entry.UserId)
     row.NameLabel.Text = entry.Username
@@ -343,7 +343,7 @@ local function applyEntry(row, index, entry)
 end
 
 local function applyPlaceholder(row, index)
-    row.Visible = true
+    row.Row.Visible = true
     row.RankLabel.Text = `#{index}`
     row.AvatarLabel.Image = ""
     row.NameLabel.Text = "—"
@@ -354,7 +354,7 @@ local function applySampleBoard()
     for index = 1, MAX_ENTRIES do
         local row = rowTemplates[index]
         local entry = SAMPLE_ENTRIES[index]
-        row.Visible = true
+        row.Row.Visible = true
         row.RankLabel.Text = `#{index}`
         row.AvatarLabel.Image = avatarThumb(entry.UserId)
         row.NameLabel.Text = entry.Name
