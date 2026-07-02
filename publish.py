@@ -188,6 +188,9 @@ def main():
     skip_lint = "--skip-lint" in sys.argv
     lint_only = "--lint-only" in sys.argv
 
+    if lint_only and skip_lint:
+        sys.exit("ERROR: --lint-only and --skip-lint cannot be combined.")
+
     if not skip_lint:
         lint()
 

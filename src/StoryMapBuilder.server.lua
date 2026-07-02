@@ -194,7 +194,10 @@ local function resetAllPuzzleState()
 		if controller.Reset then
 			controller.Reset()
 		end
-		publishProgress(puzzleId, puzzleProgress[puzzleId].State, 0, puzzleProgress[puzzleId].Total, false)
+		local progress = puzzleProgress[puzzleId]
+		if progress then
+			publishProgress(puzzleId, progress.State, 0, progress.Total, false)
+		end
 	end
 end
 

@@ -94,6 +94,19 @@ blur.Name = "GatewaySanityBlur"
 blur.Size = 0
 blur.Parent = Lighting
 
+script.Destroying:Connect(function()
+	pcall(function()
+		if colorCorrection.Parent then
+			colorCorrection:Destroy()
+		end
+	end)
+	pcall(function()
+		if blur.Parent then
+			blur:Destroy()
+		end
+	end)
+end)
+
 local whispers = Instance.new("Sound")
 whispers.Name = "SanityWhispers"
 if GameConfig.PLACEHOLDER_SOUND_IDS.Whispers > 0 then

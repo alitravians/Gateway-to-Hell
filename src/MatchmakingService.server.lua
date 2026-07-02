@@ -92,6 +92,14 @@ local function startCountdownForKey(key, modeId, playerCount)
 		if #launchUsers < playerCount then
 			queuesByKey[key] = validQueue
 			activeCountdowns[key] = nil
+			for _, userId in ipairs(validQueue) do
+				local player = Players:GetPlayerByUserId(userId)
+				if player then
+					countdownEvent:FireClient(player, {
+						Cancelled = true,
+					})
+				end
+			end
 			return
 		end
 

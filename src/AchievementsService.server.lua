@@ -186,6 +186,7 @@ local function handleOutcome(payload)
 	local modeId = payload.ModeId
 	local hasNoDeaths = payload.HasNoDeaths == true
 	local secretComplete = payload.SecretObjectiveComplete == true or endingType == "Secret"
+	local modifiedUserIds = {}
 
 	for _, player in ipairs(Players:GetPlayers()) do
 		local participant = participants[player.UserId]
@@ -193,6 +194,7 @@ local function handleOutcome(payload)
 			local record = cacheByUserId[player.UserId]
 			if record then
 				record.Progress.Escapes += 1
+				modifiedUserIds[player.UserId] = true
 			end
 			if record and record.Progress.Escapes == 1 then
 				unlock(player, "FirstEscape")
@@ -233,7 +235,9 @@ local function handleOutcome(payload)
 		if player then
 			player:SetAttribute("AchievementCount", countUnlocked(record))
 		end
-		saveRecord(userId)
+		if modifiedUserIds[userId] then
+			saveRecord(userId)
+		end
 	end
 end
 

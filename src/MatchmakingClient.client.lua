@@ -220,6 +220,18 @@ openChoiceEvent.OnClientEvent:Connect(function(payload)
 end)
 
 countdownEvent.OnClientEvent:Connect(function(payload)
+	if type(payload) == "table" and payload.Cancelled then
+		countdownText.Text = "تم إلغاء العد التنازلي"
+		countdownOverlay.Visible = true
+		TweenService:Create(countdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+			TextTransparency = 0,
+		}):Play()
+		task.delay(1.5, function()
+			countdownOverlay.Visible = false
+		end)
+		return
+	end
+
 	countdownOverlay.Visible = true
 	if type(payload) == "table" then
 		if payload.Remaining and payload.Remaining > 0 then

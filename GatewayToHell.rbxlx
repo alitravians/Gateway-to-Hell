@@ -25,7 +25,7 @@
         <G>0.06</G>
         <B>0.16</B>
       </Color3>
-      <token name="Technology">1</token>
+      <token name="Technology">4</token>
     </Properties>
     <Item class="Atmosphere" referent="1">
       <Properties>
@@ -601,6 +601,7 @@ local function handleOutcome(payload)
 	local modeId = payload.ModeId
 	local hasNoDeaths = payload.HasNoDeaths == true
 	local secretComplete = payload.SecretObjectiveComplete == true or endingType == "Secret"
+	local modifiedUserIds = {}
 
 	for _, player in ipairs(Players:GetPlayers()) do
 		local participant = participants[player.UserId]
@@ -608,6 +609,7 @@ local function handleOutcome(payload)
 			local record = cacheByUserId[player.UserId]
 			if record then
 				record.Progress.Escapes += 1
+				modifiedUserIds[player.UserId] = true
 			end
 			if record and record.Progress.Escapes == 1 then
 				unlock(player, "FirstEscape")
@@ -648,7 +650,9 @@ local function handleOutcome(payload)
 		if player then
 			player:SetAttribute("AchievementCount", countUnlocked(record))
 		end
-		saveRecord(userId)
+		if modifiedUserIds[userId] then
+			saveRecord(userId)
+		end
 	end
 end
 
@@ -2123,6 +2127,14 @@ local function startCountdownForKey(key, modeId, playerCount)
 		if #launchUsers < playerCount then
 			queuesByKey[key] = validQueue
 			activeCountdowns[key] = nil
+			for _, userId in ipairs(validQueue) do
+				local player = Players:GetPlayerByUserId(userId)
+				if player then
+					countdownEvent:FireClient(player, {
+						Cancelled = true,
+					})
+				end
+			end
 			return
 		end
 
@@ -3437,8 +3449,10 @@ local function endRound(round, result: string, reason: string)
 			end
 		end
 
-		activeRound = nil
-		setGateClosed()
+		if activeRound == round then
+			activeRound = nil
+			setGateClosed()
+		end
 	end)
 end
 
@@ -4365,7 +4379,10 @@ local function resetAllPuzzleState()
 		if controller.Reset then
 			controller.Reset()
 		end
-		publishProgress(puzzleId, puzzleProgress[puzzleId].State, 0, puzzleProgress[puzzleId].Total, false)
+		local progress = puzzleProgress[puzzleId]
+		if progress then
+			publishProgress(puzzleId, progress.State, 0, progress.Total, false)
+		end
 	end
 end
 
@@ -6448,6 +6465,18 @@ openChoiceEvent.OnClientEvent:Connect(function(payload)
 end)
 
 countdownEvent.OnClientEvent:Connect(function(payload)
+	if type(payload) == "table" and payload.Cancelled then
+		countdownText.Text = "تم إلغاء العد التنازلي"
+		countdownOverlay.Visible = true
+		TweenService:Create(countdownText, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+			TextTransparency = 0,
+		}):Play()
+		task.delay(1.5, function()
+			countdownOverlay.Visible = false
+		end)
+		return
+	end
+
 	countdownOverlay.Visible = true
 	if type(payload) == "table" then
 		if payload.Remaining and payload.Remaining > 0 then
@@ -6571,6 +6600,19 @@ local blur = Instance.new("BlurEffect")
 blur.Name = "GatewaySanityBlur"
 blur.Size = 0
 blur.Parent = Lighting
+
+script.Destroying:Connect(function()
+	pcall(function()
+		if colorCorrection.Parent then
+			colorCorrection:Destroy()
+		end
+	end)
+	pcall(function()
+		if blur.Parent then
+			blur:Destroy()
+		end
+	end)
+end)
 
 local whispers = Instance.new("Sound")
 whispers.Name = "SanityWhispers"
