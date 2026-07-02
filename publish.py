@@ -15,8 +15,8 @@ Requires:
   - luau-analyze on PATH (optional, skipped if missing)
 
 Important:
-  - Set UNIVERSE_ID and PLACE_ID below before publishing for real.
-  - They are intentionally left as REPLACE_ME until the user provides IDs.
+  - The production UNIVERSE_ID and PLACE_ID are already configured below.
+  - The REPLACE_ME guard remains only as a safety check for future edits.
 """
 
 import json
@@ -133,8 +133,8 @@ def strip_xml_declaration():
         content = handle.read()
 
     if content.startswith("<?xml"):
-        newline_index = content.index("\n")
-        content = content[newline_index + 1 :]
+        newline_index = content.find("\n")
+        content = content[newline_index + 1 :] if newline_index >= 0 else ""
         with open(RBXLX_FILE, "w", encoding="utf-8") as handle:
             handle.write(content)
         print("  Removed XML declaration")

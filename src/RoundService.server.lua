@@ -644,8 +644,10 @@ local function endRound(round, result: string, reason: string)
 			end
 		end
 
-		activeRound = nil
-		setGateClosed()
+		if activeRound == round then
+			activeRound = nil
+			setGateClosed()
+		end
 	end)
 end
 

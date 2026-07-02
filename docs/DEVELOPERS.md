@@ -17,14 +17,12 @@
 
 ## الملفات المهمة
 
-- `build_all.py`
-  - يولد `GatewayToHell.rbxlx` من `src/`
+- `default.project.json`
+  - يصف خريطة Rojo الكاملة ويولّد `GatewayToHell.rbxlx` من `src/`
 - `publish.py`
   - ينفذ 5 خطوات: lint → build → validate → strip → upload
 - `src/`
   - كل Luau source
-- `templates/`
-  - XML جاهز لـ Workspace و Lighting
 
 ## ترتيب التشغيل
 
@@ -37,7 +35,7 @@
 
 ### 2) build
 
-`build_all.py` يقرأ `src/` ويجمع place كاملًا جديدًا.
+Rojo يقرأ `default.project.json` ويجمع place كاملًا جديدًا مباشرة من `src/`.
 
 هذا أهم فرق عن المشاريع التي تعدّل ملف place الموجود داخل الملف نفسه.
 
@@ -104,7 +102,7 @@
 ## اختبار التغييرات
 
 ```bash
-python3 build_all.py
+~/.local/bin/rojo build . -o GatewayToHell.rbxlx
 python3 publish.py --lint-only
 python3 -c "import xml.etree.ElementTree as ET; ET.parse('GatewayToHell.rbxlx')"
 ```
