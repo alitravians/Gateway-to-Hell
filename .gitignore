@@ -1,0 +1,13 @@
+.env
+*.rbxl
+*.bak
+*.tmp
+*.blend1
+*.blend2
+*.blend@
+*.blend~
+*.fbx.tmp
+*.swp
+*.swo
+__pycache__/
+.DS_Store
