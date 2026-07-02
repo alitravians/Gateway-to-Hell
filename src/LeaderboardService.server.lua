@@ -8,22 +8,8 @@ local GameConfig = require(ReplicatedStorage:WaitForChild("GameConfig"))
 local RECORDS_STORE = DataStoreService:GetDataStore("GatewayToHell_PlayerRecords_v1")
 local WINS_BOARD = DataStoreService:GetOrderedDataStore("GatewayToHell_WinsBoard_v1")
 local REFRESH_INTERVAL = 60
-local SHOW_SAMPLE_WHEN_EMPTY = true
 local MAX_ENTRIES = 10
 local FETCH_LIMIT = 25
-
-local SAMPLE_ENTRIES = {
-    { UserId = 1, Name = "NightHunter", Wins = 11_178 },
-    { UserId = 2, Name = "AshWalker", Wins = 8_504 },
-    { UserId = 3, Name = "Mothveil", Wins = 7_219 },
-    { UserId = 4, Name = "Cinder", Wins = 6_886 },
-    { UserId = 5, Name = "GravePulse", Wins = 5_430 },
-    { UserId = 6, Name = "Noctis", Wins = 4_992 },
-    { UserId = 7, Name = "Ruin", Wins = 4_210 },
-    { UserId = 8, Name = "Specter", Wins = 3_771 },
-    { UserId = 9, Name = "Ember", Wins = 3_102 },
-    { UserId = 10, Name = "Ashen", Wins = 2_415 },
-}
 
 local leaderboardAnchor = Workspace:WaitForChild("LeaderboardAnchor")
 
@@ -346,29 +332,12 @@ local function applyPlaceholder(row, index)
     row.Row.Visible = true
     row.RankLabel.Text = `#{index}`
     row.AvatarLabel.Image = ""
-    row.NameLabel.Text = "—"
-    row.WinsLabel.Text = "—"
-end
-
-local function applySampleBoard()
-    for index = 1, MAX_ENTRIES do
-        local row = rowTemplates[index]
-        local entry = SAMPLE_ENTRIES[index]
-        row.Row.Visible = true
-        row.RankLabel.Text = `#{index}`
-        row.AvatarLabel.Image = avatarThumb(entry.UserId)
-        row.NameLabel.Text = entry.Name
-        row.WinsLabel.Text = formatThousands(entry.Wins)
-    end
+    row.NameLabel.Text = "بانتظار بطل"
+    row.WinsLabel.Text = formatThousands(0)
 end
 
 local function refreshBoard()
     local entries = resolveBoardEntries()
-
-    if #entries == 0 and SHOW_SAMPLE_WHEN_EMPTY then
-        applySampleBoard()
-        return
-    end
 
     for index = 1, MAX_ENTRIES do
         local row = rowTemplates[index]
