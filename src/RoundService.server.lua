@@ -95,14 +95,22 @@ local function asPlayerArray(payloadPlayers)
 	return result
 end
 
-local function getCharacter(player: Player)
+local function getCharacter(player: Player): Model?
 	local character = player.Character
 	if character and character.Parent then
 		return character
 	end
 
-	character = player.CharacterAdded:Wait()
-	return character
+	local deadline = os.clock() + 2
+	while player.Parent == Players and os.clock() < deadline do
+		character = player.Character
+		if character and character.Parent then
+			return character
+		end
+		task.wait(0.1)
+	end
+
+	return nil
 end
 
 local function getHumanoid(character: Model)
@@ -138,6 +146,9 @@ end
 
 local function moveCharacter(player: Player, cframe: CFrame)
 	local character = getCharacter(player)
+	if not character then
+		return
+	end
 	local ok = pcall(function()
 		character:PivotTo(cframe)
 	end)
